@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NutritionistForm } from './nutritionistForm.dto';
+import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
 
 @Injectable()
 export class NutritionistService {
@@ -10,26 +10,58 @@ export class NutritionistService {
   getDashboard(): string {
     return 'Nutritionist dashboard';
   }
+
+  createNutritionsist(ndto: NutritionistForm): any {
+    return 'Nutritionist Inserted name: ' + ndto.name + ' and id is ' + ndto.id;
+  }
+
+  getNutritionistByID(id: number): any {
+    return 'Nutritionist id is ' + id;
+  }
+
+  getNutritionistByName(qry: any): any {
+    return 'Nutritionist id is ' + qry.id + 'and Name is ' + qry.name;
+  }
+
+  updateNutritionist(name: string, id: number): any {
+    return 'Nutritionist updated name: ' + name + ' and id is ' + id;
+  }
+
+  updateNutritionistByID(name: string, id: number): any {
+    return 'Update admin where id ' + id + ' and change name to ' + name;
+  }
+
+  deleteNutritionistByID(id: number): any {
+    return 'Delete id is ' + id;
+  }
+
+  createblog(blogdto: NutritionistBlogForm): any {
+    return (
+      'Title: ' +
+      blogdto.title +
+      ' Desc: ' +
+      blogdto.description +
+      'Id: ' +
+      blogdto.id
+    );
+  }
+
+  getBlogByID(id: number): any {
+    return 'Blog id is ' + id;
+  }
+
+  updateBlogByID(title: string, description: string, id: number): any {
+    return (
+      'blog updated title: ' +
+      title +
+      ' update description ' +
+      description +
+      ' blog id: ' +
+      id
+    );
+  }
+
+  deleteBlog(id: number): any {
+    return 'Delete id is ' + id;
+  }
 }
-
-// getUserByID(id): any {
-//     return 'the id is ' + id;
-//   }
-
-//   getUserByIDName(qry): any {
-//     return 'the id is ' + qry.id + ' and name is ' + qry.name;
-//   }
-
-//   insertUser(mydto: NutritionistForm): any {
-//     return 'Admin Inserted name: ' + mydto.name + ' and id is ' + mydto.id;
-//   }
-
-//   updateUser(name, id): any {
-//     return 'Admin updated name: ' + name + ' and id is ' + id;
-//   }
-//   updateUserbyid(name, id): any {
-//     return 'Update admin where id ' + id + ' and change name to ' + name;
-//   }
-//   deleteUserbyid(id): any {
-//     return 'Delete id is ' + id;
-//   }
