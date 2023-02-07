@@ -1,41 +1,78 @@
-import {  ParseIntPipe,Controller ,Delete,Get, Post, Param,Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
-import { createuserDto } from 'src/user/DTO/createuser.dto';
-import { UserService } from 'src/user/services/user/user.service';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe} from "@nestjs/common";
+import { UserForm } from "src/user/DTO/userform.dto";
+import { UserService } from "../../services/user/user.service";
 
-@Controller('user')
+@Controller('/user')
 export class UserController {
-    constructor(private userService:UserService){}
-   
-    @Get('/search/:id')
-    searchUserById(
-         @Param('id',ParseIntPipe) id:number){
-            const user = this.userService.findUserById(id);
-            if(user) return user;
-            
-         }
-         @Get("/:id")
-         getUserById(@Query() qar): String{
-             return this.userService.getUser(qar);
-         }
-         @Get()
-         getUsers(): String{
-             return this.userService.getAllUser();
-         }
-         @Get("/:id")
-         getUser(@Param() data): String{
-             return this.userService.getUser(data); 
-         }
-         @Delete("/delete/:id")
-         deleteAmbulance(@Param() prm): String{
-             return this.userService.deleteUser(prm);
-         }
-         @Put("/edit/:id")
-         editAmbulance(@Param() qar): String{
-             return this.userService.editUser(qar) ;
-         }
-         @Post("/create/:id")
-         addUser(@Param() qar): String{
-             return this.userService.addUser(qar);
-         }
+    constructor(private userService: UserService) {}
+
+    @Get("/index")
+    getUser():any {
+        return this.userService.getIndex();
+    }
+
+    @Get("/nutritionistlist")
+    getNutritionistList():any {
+        return this.userService.getNutritionistList();
+    }
+
+    @Get("/trainerlist")
+    getTrainerList():any {
+        return this.userService.getTrainerList();
+    }
+
+    @Get("/findnutritionist")
+    getNutritionist(@Query() qry:any): any {
+        return this.userService.getNutritionist(qry);
+    }
+
+    @Get("/findtrainer")
+    getTrainer(@Query() qry:any): any {
+        return this.userService.getTrainer(qry);
+    }
+
+    @Post("/userreg")
+    NewUser(@Body() mydto:UserForm): any {
+        return this.userService.NewUser(mydto);
+    }
+
+    @Put("/updateuser/:id")
+    updateUserbyId(
+        @Body("name") name:string,
+        @Param("id", ParseIntPipe) id:number
+    ): any {
+        return this.userService.updateUserbyId(name,id);
+    }
+
+    @Delete("/deleteuser/:id")
+    deleteUserbyId(
+        @Param("id", ParseIntPipe) id:number
+    ): any {
+        return this.userService.deleteUserbyId(id);
+    }
+
+    @Post("/postquestion")
+    PostQuestion(@Body() mydto:UserForm):any {
+        return this.userService.PostQuestion(mydto)
+    }
+
+    @Put("/updatequestion/:id")
+    UpdateQuestion(
+        @Body("question") question:string,
+        @Param("id", ParseIntPipe) id:number
+    ): any {
+        return this.userService.UpdateQuestion(question,id);
+    }
+
+    @Delete("/deletequestion/:id")
+    DeleteQuestion(
+        @Param("id", ParseIntPipe) id:number
+    ): any {
+        return this.userService.DeleteQuestion(id);
+    }
     
+    @Get("/allquestion")
+    getAllQuestion():any {
+        return this.userService.getAllQuestion();
+    }
 }
