@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserForm } from "../../DTO/userform.dto";
+import { UserForm } from "./userform.dto";
 
 @Injectable()
 export class UserService {
@@ -25,7 +25,7 @@ export class UserService {
   }
 
   NewUser(mydto:UserForm):any {
-    return "User Inserted name" +mydto.name+" and ID: "+mydto.id;
+    return "User Inserted name " +mydto.name+" and ID: "+mydto.id;
   }
 
   updateUserbyId(name,id):any {

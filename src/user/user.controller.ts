@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe} from "@nestjs/common";
-import { UserForm } from "src/user/DTO/userform.dto";
-import { UserService } from "../../services/user/user.service";
+import { UserForm } from "./userform.dto";
+import { UserService } from "./user.service";
 
 @Controller('/user')
 export class UserController {
