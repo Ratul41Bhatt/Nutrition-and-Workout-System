@@ -28,7 +28,7 @@ export class NutritionistService {
   }
 
   updateNutritionistByID(name: string, id: number): any {
-    return 'Update admin where id ' + id + ' and change name to ' + name;
+    return 'Update Nutritionist where id ' + id + ' and change name to ' + name;
   }
 
   deleteNutritionistByID(id: number): any {
