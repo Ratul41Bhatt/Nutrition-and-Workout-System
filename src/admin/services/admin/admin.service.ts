@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 import { AdminForm } from "src/admin/DTO/admin.dto";
+import { CreateForm } from 'src/admin/DTO/create.dto';
 
 @Injectable()
 export class AdminService {
   getIndex():string {
-    return "Admin Dashboard";
+    return "Admin Index";
   }
 
   getNutritionistList():string {
@@ -24,24 +25,24 @@ export class AdminService {
     return "Location: "+qry.location+" and Hours:"+qry.hours;
   }
 
-  NewUser(mydto:AdminForm):any {
-    return "User Inserted name" +mydto.name+" and ID: "+mydto.id;
+  NewAdmin(mydto:AdminForm):any {
+    return "Admin Inserted ID: "+mydto.id+", Name " +mydto.name+", and Email: "+mydto.email+ ", and Password: "+mydto.password+", Phone: "+mydto.phone;
   }
 
-  updateUserbyId(name,id):any {
-    return "Update user where id "+id+" and change name to "+name;
+  updateAdminbyId(mydto:CreateForm, id):any {
+    return "Update Admin where id "+id+" and change name to "+mydto.name+", Email to "+mydto.email+", Password to "+mydto.password+", id to "+mydto.id;
   }
 
-  deleteUserbyId(id):any {
-    return "Delete id is "+id;
+  deleteAdminbyId(id):any {
+    return "Delete Admin where id is "+id;
   }
-
+/*
   PostQuestion(mydto:AdminForm):any {
-    return "User Inserted question"+mydto.question;
+    return "Admin Inserted question"+mydto.question;
   }
 
   UpdateQuestion(question,id):any {
-    return "Update user where id "+id+" and change question to "+question;
+    return "Update Admin where id "+id+" and change question to "+question;
   }
 
   DeleteQuestion(id):any {
@@ -50,5 +51,5 @@ export class AdminService {
 
   getAllQuestion():string {
     return "All Question";
-  }
+  } */
 }
