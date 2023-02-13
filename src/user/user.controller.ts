@@ -1,6 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe} from "@nestjs/common";
-import { UserForm } from "src/user/DTO/userform.dto";
-import { UserService } from "../../services/user/user.service";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
+import { UserForm } from "./userform.dto";
+import { UserUpdateForm } from "./userupdateform.dto";
+import { UserService } from "./user.service";
+import { UsePipes } from "@nestjs/common/decorators";
+import { ValidationPipe } from "@nestjs/common/pipes";
 
 @Controller('/user')
 export class UserController {
@@ -32,16 +35,18 @@ export class UserController {
     }
 
     @Post("/userreg")
+    @UsePipes(new ValidationPipe())
     NewUser(@Body() mydto:UserForm): any {
         return this.userService.NewUser(mydto);
     }
 
     @Put("/updateuser/:id")
+    @UsePipes(new ValidationPipe())
     updateUserbyId(
-        @Body("name") name:string,
+        @Body() mydto:UserUpdateForm,
         @Param("id", ParseIntPipe) id:number
     ): any {
-        return this.userService.updateUserbyId(name,id);
+        return this.userService.updateUserbyId(mydto,id);
     }
 
     @Delete("/deleteuser/:id")
@@ -50,7 +55,7 @@ export class UserController {
     ): any {
         return this.userService.deleteUserbyId(id);
     }
-
+/*
     @Post("/postquestion")
     PostQuestion(@Body() mydto:UserForm):any {
         return this.userService.PostQuestion(mydto)
@@ -59,7 +64,7 @@ export class UserController {
     @Put("/updatequestion/:id")
     UpdateQuestion(
         @Body("question") question:string,
-        @Param("id", ParseIntPipe) id:number
+        @Param('id', ParseIntPipe) id:number
     ): any {
         return this.userService.UpdateQuestion(question,id);
     }
@@ -74,5 +79,5 @@ export class UserController {
     @Get("/allquestion")
     getAllQuestion():any {
         return this.userService.getAllQuestion();
-    }
+    } */
 }

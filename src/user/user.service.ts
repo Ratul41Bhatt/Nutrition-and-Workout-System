@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserForm } from "../../DTO/userform.dto";
+import { UserForm } from "./userform.dto";
+import { UserUpdateForm } from './userupdateform.dto';
 
 @Injectable()
 export class UserService {
@@ -25,17 +26,17 @@ export class UserService {
   }
 
   NewUser(mydto:UserForm):any {
-    return "User Inserted name" +mydto.name+" and ID: "+mydto.id;
+    return "User Inserted ID: "+mydto.id+", Name " +mydto.name+", and Email: "+mydto.email+ ", and Password: "+mydto.password+", Age: "+mydto.age;
   }
 
-  updateUserbyId(name,id):any {
-    return "Update user where id "+id+" and change name to "+name;
+  updateUserbyId(mydto:UserUpdateForm, id):any {
+    return "Update user where id "+id+" and change name to "+mydto.name+", Email to "+mydto.email+", Password to "+mydto.password+", Age to "+mydto.age;
   }
 
   deleteUserbyId(id):any {
-    return "Delete id is "+id;
+    return "Delete user where id is "+id;
   }
-
+/*
   PostQuestion(mydto:UserForm):any {
     return "User Inserted question"+mydto.question;
   }
@@ -50,5 +51,5 @@ export class UserService {
 
   getAllQuestion():string {
     return "All Question";
-  }
+  } */
 }
