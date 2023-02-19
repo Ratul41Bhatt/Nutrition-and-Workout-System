@@ -1,12 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserEntity } from './user.entity';
 
 import { UserForm } from "./userform.dto";
 import { UserUpdateForm } from './userupdateform.dto';
 
 @Injectable()
 export class UserService {
-  getIndex():string {
-    return "User Index";
+  constructor (
+    @InjectRepository(UserEntity)
+    private UserRepo: Repository<UserEntity>,
+  ) {}
+
+  getIndex():any {
+    return this.UserRepo.find();
   }
 
   getNutritionistList():string {
@@ -26,15 +34,20 @@ export class UserService {
   }
 
   NewUser(mydto:UserForm):any {
-    return "User Inserted ID: "+mydto.id+", Name " +mydto.name+", and Email: "+mydto.email+ ", and Password: "+mydto.password+", Age: "+mydto.age;
+    const UserAccount = new UserEntity()
+    UserAccount.name = mydto.name;
+    UserAccount.email = mydto.email;
+    UserAccount.password = mydto.password;
+    UserAccount.age = mydto.age;
+    return this.UserRepo.save(UserAccount);
   }
 
   updateUserbyId(mydto:UserUpdateForm, id):any {
-    return "Update user where id "+id+" and change name to "+mydto.name+", Email to "+mydto.email+", Password to "+mydto.password+", Age to "+mydto.age;
+    return this.UserRepo.update(id, mydto);
   }
 
   deleteUserbyId(id):any {
-    return "Delete user where id is "+id;
+    return this.UserRepo.delete(id);
   }
 /*
   PostQuestion(mydto:UserForm):any {
