@@ -5,7 +5,7 @@ import { AdminForm } from "src/admin/DTO/admin.dto";
 @Injectable()
 export class AdminService {
   getIndex():string {
-    return "User Index";
+    return "Admin Dashboard";
   }
 
   getNutritionistList():string {

@@ -10,6 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { NutritionistService } from './nutritionist.service';
+import { UsePipes } from '@nestjs/common/decorators';
+import { ValidationPipe } from '@nestjs/common/pipes';
 import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
 
 @Controller('/nutritionist')
@@ -47,11 +49,12 @@ export class NutritionistController {
   }
 
   @Put('/updatenutritionist/:id')
+  @UsePipes(new ValidationPipe())
   updatenutritionistbyid(
-    @Body('name') name: string,
+    @Body() ndto: NutritionistForm,
     @Param('id', ParseIntPipe) id: number,
   ): any {
-    return this.nutritionistService.updateNutritionistByID(name, id);
+    return this.nutritionistService.updateNutritionistByID(ndto, id);
   }
 
   @Delete('/deleteuser/:id')
@@ -70,12 +73,12 @@ export class NutritionistController {
   }
 
   @Put('/updateblog/:id')
+  @UsePipes(new ValidationPipe())
   updateUserbyid(
-    @Body('title') title: string,
-    @Body('description') description: string,
+    @Body() blogdto: NutritionistBlogForm,
     @Param('id', ParseIntPipe) id: number,
   ): any {
-    return this.nutritionistService.updateBlogByID(title, description, id);
+    return this.nutritionistService.updateBlogByID(blogdto, id);
   }
 
   @Delete('/deleteblog/:id')

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@nestjs/common';
 import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
 
@@ -27,8 +28,17 @@ export class NutritionistService {
     return 'Nutritionist updated name: ' + name + ' and id is ' + id;
   }
 
-  updateNutritionistByID(name: string, id: number): any {
-    return 'Update Nutritionist where id ' + id + ' and change name to ' + name;
+  updateNutritionistByID(ndto: NutritionistForm, id: number): any {
+    return (
+      'Update admin where id ' +
+      id +
+      ' and change name to ' +
+      ndto.name +
+      ' email: ' +
+      ndto.email +
+      ' Password: ' +
+      ndto.password
+    );
   }
 
   deleteNutritionistByID(id: number): any {
@@ -50,12 +60,12 @@ export class NutritionistService {
     return 'Blog id is ' + id;
   }
 
-  updateBlogByID(title: string, description: string, id: number): any {
+  updateBlogByID(blogdto: NutritionistBlogForm, id: number): any {
     return (
       'blog updated title: ' +
-      title +
+      blogdto.title +
       ' update description ' +
-      description +
+      blogdto.description +
       ' blog id: ' +
       id
     );
@@ -65,3 +75,4 @@ export class NutritionistService {
     return 'Delete id is ' + id;
   }
 }
+
