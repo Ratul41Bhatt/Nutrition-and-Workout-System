@@ -19,8 +19,7 @@ export class AdminForm{
     password: string;
 
     @IsNotEmpty({message: "Phone number must be fill up"})
-    @IsInt({message: "Invalid number"})
-    @Min(11, {message: "Phone Number must be 11 digits"})
-    
+    @IsString({message: "Invalid number"})
+    @Length(11,11, {message: "Phone Number must be 11 digits"})
     phone: number;
 }
