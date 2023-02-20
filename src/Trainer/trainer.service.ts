@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { TrainerBlogForm, TrainerForm } from './trainerForm.dto';
+import { TrainerBlogForm, TrainerForm, WorkoutForm } from './trainerForm.dto';
+import {TrainerEntity} from './trainer.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 
 @Injectable()
 export class TrainerService {
+
+  constructor(@InjectRepository(TrainerEntity)
+    private workoutRepo: Repository<TrainerEntity>,) {}
+
   getIndex(): string {
     return 'Trainer Index';
   }
@@ -64,4 +72,11 @@ export class TrainerService {
   deleteBlog(id: number): any {
     return 'Delete id is ' + id;
   }
+
+  
+  insertexercise(mydto:WorkoutForm):any {
+    
+    return this.workoutRepo.save(mydto);
+       }
+  
 }
