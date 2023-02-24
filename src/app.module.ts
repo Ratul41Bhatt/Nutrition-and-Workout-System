@@ -4,10 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { TrainerModule } from './Trainer/trainer.module';
-import { AdminModule } from "./admin/admin.module";
+import { AdminModule } from "./admin/admin/Admin.module";
 import { NutritionistModule } from "./Nutritionist/nutritionist.module";
 import { UserModule } from "./user/user.module";
-import { TypeOrmModule } from '@nestjs/typeorm/dist';
+import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [AdminModule, NutritionistModule, TrainerModule, UserModule, TypeOrmModule.forRoot(
     {
