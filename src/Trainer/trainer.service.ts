@@ -30,6 +30,7 @@ export class TrainerService {
     return this.workoutrepo.save(dto);
   }
 
+
   getWorkoutByID(id: number): any
   {
     return this.workoutrepo.find({ 
@@ -40,10 +41,23 @@ export class TrainerService {
   });
   }
 
-  getExerciseByName(qry: any): any {
-    return 'Trainer id is ' + qry.id + 'and Name is ' + qry.name;
+  updateWorkout(mydto:WorkoutForm,id): any
+  {
+    return this.workoutrepo.update(id,mydto);
   }
 
+  deleteWorkout(id): any 
+  {
+    return this.workoutrepo.delete(id);
+  }
+///////////////////////////////////////////////
+ 
+
+
+
+ 
+
+  
   updateExercise(name: string, id: number): any {
     return 'Trainer updated name: ' + name + ' and id is ' + id;
   }
@@ -84,8 +98,9 @@ export class TrainerService {
     return this.exerciserepo.save(mydto);
   }
 
-  getexerciselist():any{
-    return this.exerciserepo.find();
+  getworkoutlist():any
+  {
+    return this.workoutrepo.find();
   }
   
 }

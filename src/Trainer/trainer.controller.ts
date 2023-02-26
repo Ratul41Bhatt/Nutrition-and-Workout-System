@@ -44,43 +44,34 @@ import {
     }
   
     @Get('/showallworkouts')
-    getexerciselistName(@Query() qry: any): any {
-      return this.trainerService.getexerciselist();
+    getworkoutlist(@Query() qry: any): any {
+    return this.trainerService.getworkoutlist();
     }
-  
-    @Put('/updateworkout/')
-    updatetrainer(@Body('name') name: string, @Body('id') id: number): any {
-      return this.trainerService.updateExercise(name, id);
-    }
-  
-    @Put('/updateworkout/:id')
-    updatetrainerbyid(
-      @Body('name') name: string,
-      @Param('id', ParseIntPipe) id: number,
-    ): any {
-      return this.trainerService.updateExerciseByID(name, id);
-    }
-  
+
     @Delete('/deleteworkout/:id')
-    deleteTrainerByID(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.deleteExerciseByID(id);
+    deleteWorkout(@Param('id', ParseIntPipe) id: number): any
+    {
+      return this.trainerService.deleteWorkout(id);
     }
-  
-    @Put('/updateexcercise/:id')
-    updateUserbyid(
-      @Body('title') title: string,
-      @Body('description') description: string,
+
+    @Put('/updateworkout/:id')
+    updateWorkout(
+      @Body() mydto: WorkoutForm,
       @Param('id', ParseIntPipe) id: number,
     ): any {
-      return this.trainerService.updateBlogByID(title, description, id);
+      return this.trainerService.updateWorkout(mydto, id);
     }
+  ////////////////////////////////////////////////////////////////////////////////
+  
+  
+
   
     @Delete('/deleteexcercise/:id')
     deleteBlog(@Param('id', ParseIntPipe) id: number): any {
       return this.trainerService.deleteBlog(id);
 
     }
-    @Post('/insertexercise')
+    @Post('/createexercise')
     @UsePipes(new ValidationPipe())
       insertexercise(@Body() trainerdto: ExerciseForm): any {
       return this.trainerService.insertexercise(trainerdto);

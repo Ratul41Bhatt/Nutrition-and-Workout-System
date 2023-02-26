@@ -1,4 +1,4 @@
-//import { ClientEntity } from 'src/user/user.entity';
+//import { UserEntity } from 'src/user/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity("Exercise")
@@ -16,10 +16,17 @@ export class ExerciseEntity
   @Column()
   reps: number;
   
-  //@OneToMany(() => UserEntity, (user) => user.trainer)
-  //managers: UserEntity[]
+  
 
 }
+
+//@Entity("trainer")
+//export class TrainerENTITY
+//{
+//  @OneToMany(() => UserEntity, (user) => user.trainer)
+ // user: UserEntity[]
+
+//}
 
 @Entity("Workout")
 export class WorkoutEntity
