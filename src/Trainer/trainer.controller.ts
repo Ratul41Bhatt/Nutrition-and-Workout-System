@@ -11,41 +11,46 @@ import {
   UsePipes,
   ValidationPipe,
   } from '@nestjs/common';
+
   import { TrainerService } from './trainer.service';
-  import { TrainerBlogForm, TrainerForm , WorkoutForm} from './trainerForm.dto';
+  import { ExerciseForm , WorkoutForm} from './trainerForm.dto';
   
   @Controller('/trainer')
   export class TrainerController {
+
     constructor(private trainerService: TrainerService) {}
   
     @Get('/index')
-    getTrainer(): any {
+    getTrainer(): any 
+    {
       return this.trainerService.getIndex();
     }
   
     @Get('/dashboard')
-    getTrainerDashboard(): any {
+    getTrainerDashboard(): any 
+    {
       return this.trainerService.getDashboard();
     }
   
     @Post('/createworkout')
-    createtrainer(@Body() ndto: TrainerForm): any {
-      return this.trainerService.createTrainer(ndto);
+    createWorkout(@Body() ndto: WorkoutForm): any 
+    {
+      return this.trainerService.createWorkout(ndto);
     }
   
     @Get('/findworkout/:id')
-    getUserByID(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.getTrainerByID(id);
+    getWorkoutByID(@Param('id', ParseIntPipe) id: number): any {
+      return this.trainerService.getWorkoutByID(id);
     }
   
-    @Get('/findworkout')
-    getUserByIDName(@Query() qry: any): any {
-      return this.trainerService.getTrainerByName(qry);
+    @Get('/showallworkouts')
+    getexerciselistName(@Query() qry: any): any {
+      return this.trainerService.getexerciselist();
     }
   
     @Put('/updateworkout/')
     updatetrainer(@Body('name') name: string, @Body('id') id: number): any {
-      return this.trainerService.updateTrainer(name, id);
+      return this.trainerService.updateExercise(name, id);
     }
   
     @Put('/updateworkout/:id')
@@ -53,22 +58,12 @@ import {
       @Body('name') name: string,
       @Param('id', ParseIntPipe) id: number,
     ): any {
-      return this.trainerService.updateTrainerByID(name, id);
+      return this.trainerService.updateExerciseByID(name, id);
     }
   
     @Delete('/deleteworkout/:id')
     deleteTrainerByID(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.deleteTrainerByID(id);
-    }
-  
-    @Post('/insertblog')
-    createblog(@Body() blogdto: TrainerBlogForm): any {
-      return this.trainerService.createblog(blogdto);
-    }
-  
-    @Get('/findexcercise/:id')
-    getBlogByID(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.getBlogByID(id);
+      return this.trainerService.deleteExerciseByID(id);
     }
   
     @Put('/updateexcercise/:id')
@@ -87,7 +82,7 @@ import {
     }
     @Post('/insertexercise')
     @UsePipes(new ValidationPipe())
-      insertexercise(@Body() trainerdto: WorkoutForm): any {
+      insertexercise(@Body() trainerdto: ExerciseForm): any {
       return this.trainerService.insertexercise(trainerdto);
     }
     

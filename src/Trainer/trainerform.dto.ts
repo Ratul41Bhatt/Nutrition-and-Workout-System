@@ -32,31 +32,34 @@ export class TrainerForm {
   password: string;
 }
 
-export class TrainerBlogForm {
-  @IsNotEmpty({ message: 'ERROR: THIS FIELD CANNOT BE EMPTY' })
-  @IsInt({ message: 'ERROR:  CANNOT BE EMPTY' })
-  id: number;
 
-  @IsNotEmpty({ message: 'ERROR: TITLE CANNOT BE EMPTY' })
-  title: string;
 
-  @IsNotEmpty({ message: 'ERROR: THIS FIELD CANNOT BE EMPTY' })
-  @MaxLength(1000, { message: 'ERROR: CANNOT WRITE MORE THAN 1000 WORDS' })
-  description: string;
-}
-
-export class WorkoutForm {
+export class ExerciseForm 
+{
   
-  
-
   @IsNotEmpty()
   exercisename: string;
 
   @IsNotEmpty()
+  @IsInt({ message: 'ERROR: INVALID ID' })
+  @Length(1, 10, {
+    message: 'ERROR: Sets SHOULD be between 1 and 10',
+  })
   sets: number;
 
   @IsNotEmpty()
-  reps: number;
+  @IsInt({ message: 'ERROR: INVALID ID' })
+  repetitions: number;
 
+}
 
+export class WorkoutForm
+{
+  @IsNotEmpty()
+  workoutname: string;
+  
+  @IsNotEmpty()
+  @IsInt({ message: 'ERROR: INVALID' })
+  @Length(1, 10, {message: 'ERROR: Sets SHOULD be between 1 and 10',})
+  time: number
 }

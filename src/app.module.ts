@@ -7,7 +7,7 @@ import { TrainerModule } from './Trainer/trainer.module';
 import { AdminModule } from "./admin/admin.module";
 import { NutritionistModule } from "./Nutritionist/nutritionist.module";
 import { UserModule } from "./user/user.module";
-import { TypeOrmModule } from '@nestjs/typeorm/dist';
+import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [AdminModule, NutritionistModule, TrainerModule, UserModule, TypeOrmModule.forRoot(
     {
@@ -15,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm/dist';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      database: 'Nutrition-and-Workout-System',
+      database: 'postgres',
       password: 'root',
       autoLoadEntities: true,
       synchronize: true,
