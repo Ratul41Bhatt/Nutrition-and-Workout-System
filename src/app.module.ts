@@ -7,7 +7,6 @@ import { AdminModule } from './admin/admin.module';
 import { NutritionistModule } from './Nutritionist/nutritionist.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 @Module({
   imports: [
     AdminModule,
@@ -19,8 +18,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '123',
-      database: 'NWS',
+      database: 'postgres',
+      password: 'root',
       autoLoadEntities: true,
       synchronize: true,
     }),
