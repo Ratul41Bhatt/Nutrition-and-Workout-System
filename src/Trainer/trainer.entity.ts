@@ -1,8 +1,9 @@
-//import { ClientEntity } from 'src/user/user.entity';
+//import { UserEntity } from 'src/user/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
-@Entity("Trainer")
-export class TrainerEntity{
+@Entity("Exercise")
+export class ExerciseEntity
+{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,8 +16,29 @@ export class TrainerEntity{
   @Column()
   reps: number;
   
-  //@OneToMany(() => UserEntity, (user) => user.trainer)
-  //managers: UserEntity[]
+  
+
+}
+
+//@Entity("trainer")
+//export class TrainerENTITY
+//{
+//  @OneToMany(() => UserEntity, (user) => user.trainer)
+ // user: UserEntity[]
+
+//}
+
+@Entity("Workout")
+export class WorkoutEntity
+{
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  workoutname: string;
+
+  @Column()
+  time: number;
 
 
 }
