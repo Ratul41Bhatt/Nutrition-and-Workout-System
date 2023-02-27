@@ -1,11 +1,19 @@
 
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm/dist';
+import { Repository } from 'typeorm';
+import { NutritionistEntity } from './nutritionistentity.entity';
 import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
 
 @Injectable()
 export class NutritionistService {
-  getIndex(): string {
-    return 'Nutritionist Index';
+  constructor(
+    @InjectRepository(NutritionistEntity)
+    private NRepo: Repository<NutritionistEntity>,
+  ) {}
+
+  getIndex(): any {
+    return this.NRepo.find();
   }
 
   getDashboard(): string {
@@ -13,7 +21,11 @@ export class NutritionistService {
   }
 
   createNutritionsist(ndto: NutritionistForm): any {
-    return 'Nutritionist Inserted name: ' + ndto.name + ' and id is ' + ndto.id;
+    const nAccount = new NutritionistEntity();
+    nAccount.name = ndto.name;
+    nAccount.email = ndto.email;
+    nAccount.password = ndto.password;
+    return this.NRepo.save(nAccount);
   }
 
   getNutritionistByID(id: number): any {
