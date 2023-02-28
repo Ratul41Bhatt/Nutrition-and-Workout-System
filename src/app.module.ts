@@ -8,12 +8,7 @@ import { NutritionistModule } from './Nutritionist/nutritionist.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
-  imports: [
-    AdminModule,
-    NutritionistModule,
-    TrainerModule,
-    UserModule,
-    TypeOrmModule.forRoot({
+  imports: [AdminModule, NutritionistModule, TrainerModule, UserModule, TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5432,

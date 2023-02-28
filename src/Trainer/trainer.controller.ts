@@ -11,6 +11,7 @@ import {
   UsePipes,
   ValidationPipe,
   } from '@nestjs/common';
+import { parse } from 'querystring';
 
   import { TrainerService } from './trainer.service';
   import { ExerciseForm , WorkoutForm} from './trainerForm.dto';
@@ -43,6 +44,11 @@ import {
       return this.trainerService.getWorkoutByID(id);
     }
   
+    @Get('/findworkout2/:name')
+    getWorkoutByName(@Param('name') name: String): any {
+      return this.trainerService.getWorkoutByName(name);
+    }
+
     @Get('/showallworkouts')
     getworkoutlist(@Query() qry: any): any {
     return this.trainerService.getworkoutlist();

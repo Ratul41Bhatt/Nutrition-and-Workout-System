@@ -41,6 +41,13 @@ getWorkoutByID(id: number): any
   });
   }
 
+getWorkoutByName(name): any
+{
+  return this.workoutrepo.find({ 
+    where: {workoutname:name},
+  })
+}
+
 updateWorkout(mydto:WorkoutForm,id): any
   {
     return this.workoutrepo.update(id,mydto);
@@ -61,6 +68,12 @@ getworkoutlist():any
 
 createexercise(mydto:ExerciseForm):any 
 {   
+  //const adminaccount = new AdminEntity()
+   // adminaccount.name = mydto.name;
+  //  adminaccount.email = mydto.email;
+   // adminaccount.password = mydto.password;
+    //adminaccount.address = mydto.address;
+   //return this.adminRepo.save(adminaccount);
   return this.exerciserepo.save(mydto);
 }
 
