@@ -1,82 +1,164 @@
 import { Injectable } from '@nestjs/common';
-import { TrainerBlogForm, TrainerForm, WorkoutForm } from './trainerForm.dto';
-import {TrainerEntity} from './trainer.entity';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
+import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
+import { ExerciseEntity, WorkoutEntity} from './trainer.entity';
 
 @Injectable()
 export class TrainerService {
 
-  constructor(@InjectRepository(TrainerEntity)
-    private workoutRepo: Repository<TrainerEntity>,) {}
+  constructor(
+    @InjectRepository(ExerciseEntity)
+    private exerciserepo: Repository<ExerciseEntity>,
+    @InjectRepository(WorkoutEntity)
+    private workoutrepo: Repository<WorkoutEntity>,
+   // @InjectRepository(TrainerEntity)
+   // private //trainerrepo: Repository<TrainerEntity>
+    ) {}
 
-  getIndex(): string {
+    
+getIndex(): string 
+  {
     return 'Trainer Index';
   }
 
-  getDashboard(): string {
+getDashboard(): string 
+  {
     return 'Trainer dashboard';
   }
 
-  createTrainer(ndto: TrainerForm): any {
-    return 'Trainer Inserted name: ' + ndto.name + ' and id is ' + ndto.id;
+createWorkout(dto: WorkoutForm): any 
+  {
+    return this.workoutrepo.save(dto);
   }
 
-  getTrainerByID(id: number): any {
-    return 'Trainer id is ' + id;
-  }
 
-  getTrainerByName(qry: any): any {
-    return 'Trainer id is ' + qry.id + 'and Name is ' + qry.name;
-  }
-
-  updateTrainer(name: string, id: number): any {
-    return 'Trainer updated name: ' + name + ' and id is ' + id;
-  }
-
-  updateTrainerByID(name: string, id: number): any {
-    return 'Update Trainer where id ' + id + ' and change name to ' + name;
-  }
-
-  deleteTrainerByID(id: number): any {
-    return 'Delete id is ' + id;
-  }
-
-  createblog(blogdto: TrainerBlogForm): any {
-    return (
-      'Title: ' +
-      blogdto.title +
-      ' Desc: ' +
-      blogdto.description +
-      'Id: ' +
-      blogdto.id
-    );
-  }
-
-  getBlogByID(id: number): any {
-    return 'Blog id is ' + id;
-  }
-
-  updateBlogByID(title: string, description: string, id: number): any {
-    return (
-      'blog updated title: ' +
-      title +
-      ' update description ' +
-      description +
-      ' blog id: ' +
-      id
-    );
-  }
-
-  deleteBlog(id: number): any {
-    return 'Delete id is ' + id;
-  }
-
-  
-  insertexercise(mydto:WorkoutForm):any {
+getWorkoutByID(id: number): any
+  {
+   return this.workoutrepo.find({ 
+     where: {id:id},
     
-    return this.workoutRepo.save(mydto);
-       }
-  
+ });
 }
+
+getWorkoutByName(name): any
+{
+  return this.workoutrepo.find({ 
+    where: {workoutname:name},
+  })
+}
+
+updateWorkout(mydto:WorkoutForm,id): any
+  {
+    return this.workoutrepo.update(id,mydto);
+  }
+
+deleteWorkout(id): any 
+  {
+    return this.workoutrepo.delete(id);
+  }
+
+getworkoutlist():any
+{
+    return this.workoutrepo.find();
+}
+
+getWorkoutByExerciseId(id):any
+{
+  return this.exerciserepo.find({        
+    where: {id: id},
+relations: {
+    workout: true,
+},
+});
+}
+
+getWorkoutByExerciseName(name):any
+{
+  return this.exerciserepo.find({        
+    where: {exercisename: name},
+relations: {
+    workout: true,
+},
+});
+}
+///////////////////////////////////////////////
+ 
+
+createexercise(mydto:ExerciseForm):any 
+{   
+  
+  return this.exerciserepo.save(mydto);
+}
+
+
+getExerciseByID(id: number): any
+{
+    return this.exerciserepo.find({ 
+      where: {id:id},
+       
+  });
+}
+
+getExerciseByName(name): any
+{
+    return this.exerciserepo.find({ 
+      where: {exercisename:name}
+       
+  });
+}
+
+updateExercise(mydto:ExerciseForm,id): any
+{
+  return this.exerciserepo.update(id,mydto);
+}
+
+deleteExercise(id): any 
+{
+  return this.exerciserepo.delete(id);
+}
+
+getexerciselist():any
+{
+    return this.exerciserepo.find();
+}
+
+getexercisesByWorkoutID(id):any {
+  return this.workoutrepo.find({ 
+          where: {id: id},
+      relations: {
+          exercises: true,
+      },
+   });
+}
+
+getexercisesByWorkoutName(name):any {
+  return this.workoutrepo.find({        
+    where: {workoutname: name},
+relations: {
+    exercises: true,
+},
+});
+}
+ /*
+addexercise(mydto: ExerciseForm):any{
+  const exerciseaccount = new ExerciseEntity() 
+  exerciseaccount.exercisename = mydto.exercisename;
+  exerciseaccount.sets = mydto.sets;
+  exerciseaccount.reps = mydto.reps;   //this was used to insert a single value without changing all values
+ /exerciseaccount.workoutId = mydto.workoutId;
+   return this.exerciserepo.save(exerciseaccount);
+}
+async signup(mydto) {
+  const salt = await bcrypt.genSalt();
+  const hassedpassed = await bcrypt.hash(mydto.password, salt);
+  mydto.password= hassedpassed;
+  return this.trainerrepo.save(mydto);
+  }
+*/
+
+}
+ 
