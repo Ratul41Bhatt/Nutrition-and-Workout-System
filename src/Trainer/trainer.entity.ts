@@ -1,5 +1,5 @@
 //import { UserEntity } from 'src/user/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany,ManyToOne } from 'typeorm';
 
 @Entity("Exercise")
 export class ExerciseEntity
@@ -16,17 +16,12 @@ export class ExerciseEntity
   @Column()
   reps: number;
   
-  
+@ManyToOne(() => WorkoutEntity, (workout) => workout.exercise)
+workout: ExerciseEntity  
 
 }
 
-//@Entity("trainer")
-//export class TrainerENTITY
-//{
-//  @OneToMany(() => UserEntity, (user) => user.trainer)
- // user: UserEntity[]
 
-//}
 
 @Entity("Workout")
 export class WorkoutEntity
@@ -40,5 +35,7 @@ export class WorkoutEntity
   @Column()
   time: number;
 
+  @OneToMany(() => ExerciseEntity, (exercise) => exercise.workout)
+  exercise: WorkoutEntity[]
 
 }

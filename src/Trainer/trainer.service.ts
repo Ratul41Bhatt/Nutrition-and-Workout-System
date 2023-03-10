@@ -15,92 +15,99 @@ export class TrainerService {
     private workoutrepo: Repository<WorkoutEntity>) {}
 
     
-  getIndex(): string 
+getIndex(): string 
   {
     return 'Trainer Index';
   }
 
-  getDashboard(): string 
+getDashboard(): string 
   {
     return 'Trainer dashboard';
   }
 
-  createWorkout(dto: WorkoutForm): any 
+createWorkout(dto: WorkoutForm): any 
   {
     return this.workoutrepo.save(dto);
   }
 
 
-  getWorkoutByID(id: number): any
+getWorkoutByID(id: number): any
   {
     return this.workoutrepo.find({ 
       where: {id:id},
-  //relations: {
-   //   : true,
-  //  },
+       relations: {
+      exercise : true,
+   },
   });
   }
 
-  updateWorkout(mydto:WorkoutForm,id): any
+getWorkoutByName(name): any
+{
+  return this.workoutrepo.find({ 
+    where: {workoutname:name},
+  })
+}
+
+updateWorkout(mydto:WorkoutForm,id): any
   {
     return this.workoutrepo.update(id,mydto);
   }
 
-  deleteWorkout(id): any 
+deleteWorkout(id): any 
   {
     return this.workoutrepo.delete(id);
   }
+
+getworkoutlist():any
+{
+    return this.workoutrepo.find();
+}
+  
 ///////////////////////////////////////////////
  
 
+createexercise(mydto:ExerciseForm):any 
+{   
+  //const adminaccount = new AdminEntity()
+   // adminaccount.name = mydto.name;
+  //  adminaccount.email = mydto.email;
+   // adminaccount.password = mydto.password;
+    //adminaccount.address = mydto.address;
+   //return this.adminRepo.save(adminaccount);
+  return this.exerciserepo.save(mydto);
+}
 
 
- 
+getExerciseByID(id: number): any
+{
+    return this.exerciserepo.find({ 
+      where: {id:id},
+       
+  });
+}
 
-  
-  updateExercise(name: string, id: number): any {
-    return 'Trainer updated name: ' + name + ' and id is ' + id;
-  }
+updateExercise(mydto:ExerciseForm,id): any
+{
+  return this.exerciserepo.update(id,mydto);
+}
 
-  updateExerciseByID(name: string, id: number): any {
-    return 'Update Trainer where id ' + id + ' and change name to ' + name;
-  }
+deleteExercise(id): any 
+{
+  return this.exerciserepo.delete(id);
+}
 
-  deleteExerciseByID(id: number): any {
-    return 'Delete id is ' + id;
-  }
+getexerciselist():any
+{
+    return this.exerciserepo.find();
+}
 
-  
+getexercisesByWorkoutID(id):any {
+  return this.workoutrepo.find({ 
+          where: {id:id},
+      relations: {
+          exercise: true,
+      },
+   });
+}
 
-  getBlogByID(id: number): any {
-    return 'Blog id is ' + id;
-  }
-
-  updateBlogByID(title: string, description: string, id: number): any {
-    return (
-      'blog updated title: ' +
-      title +
-      ' update description ' +
-      description +
-      ' blog id: ' +
-      id
-    );
-  }
-
-  deleteBlog(id: number): any {
-    return 'Delete id is ' + id;
-  }
-
-  
-  insertexercise(mydto:ExerciseForm):any 
-  {
-    
-    return this.exerciserepo.save(mydto);
-  }
-
-  getworkoutlist():any
-  {
-    return this.workoutrepo.find();
-  }
-  
 }

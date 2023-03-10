@@ -11,6 +11,7 @@ import {
   UsePipes,
   ValidationPipe,
   } from '@nestjs/common';
+import { parse } from 'querystring';
 
   import { TrainerService } from './trainer.service';
   import { ExerciseForm , WorkoutForm} from './trainerForm.dto';
@@ -43,6 +44,11 @@ import {
       return this.trainerService.getWorkoutByID(id);
     }
   
+    @Get('/findworkout2/:name')
+    getWorkoutByName(@Param('name') name: String): any {
+      return this.trainerService.getWorkoutByName(name);
+    }
+
     @Get('/showallworkouts')
     getworkoutlist(@Query() qry: any): any {
     return this.trainerService.getworkoutlist();
@@ -63,18 +69,46 @@ import {
     }
   ////////////////////////////////////////////////////////////////////////////////
   
-  
-
-  
-    @Delete('/deleteexcercise/:id')
-    deleteBlog(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.deleteBlog(id);
-
-    }
-    @Post('/createexercise')
-    @UsePipes(new ValidationPipe())
-      insertexercise(@Body() trainerdto: ExerciseForm): any {
-      return this.trainerService.insertexercise(trainerdto);
-    }
-    
+  @Post('/createexercise')
+  @UsePipes(new ValidationPipe())
+  createexercise(@Body() edto: ExerciseForm): any {
+    return this.trainerService.createexercise(edto);
   }
+
+  
+  @Delete('/deleteexcercise/:id')
+  deleteExercise(@Param('id', ParseIntPipe) id: number): any {
+      return this.trainerService.deleteExercise(id);
+
+  }
+  
+  @Get('/showallexercises')
+  getexerciselist(@Query() qry: any): any {
+    return this.trainerService.getexerciselist();
+  }
+  
+  @Get('/findexercise/:id')
+    getExerciseByID(@Param('id', ParseIntPipe) id: number): any {
+      return this.trainerService.getExerciseByID(id);
+  }
+
+  @Put('/updateexercise/:id')
+  updateExercise(
+      @Body() mydto: ExerciseForm,
+      @Param('id', ParseIntPipe) id: number,
+    ): any {
+      return this.trainerService.updateExercise(mydto, id);
+  }
+////////////////////////////////////////////////////////////////////////////////////////
+
+//@Post('/addexercise')
+///@UsePipes(new ValidationPipe())
+//addExerciseToWorkout(@Body() managerdto: ManagerForm)): any {
+//}
+
+@Get('/findexercisesbyworkout/:id')
+getexercisesByWorkoutID(@Param('id', ParseIntPipe) id: number): any {
+      return this.trainerService.getexercisesByWorkoutID(id);
+  }
+
+}
