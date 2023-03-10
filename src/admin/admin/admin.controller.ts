@@ -59,5 +59,10 @@ import {
       return this.EmployeeService.deleteUserbyid(id);
      
     }
+    @Post('/instruction')
+    @UsePipes(new ValidationPipe())
+      instructionadd(@Body() mydto: EmployeeForm): any {
+        return this.EmployeeService.insertInstruction(mydto);
+      }
   }
   
