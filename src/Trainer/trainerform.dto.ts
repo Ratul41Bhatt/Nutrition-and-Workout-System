@@ -17,17 +17,23 @@ export class ExerciseForm
 
   @IsNotEmpty()
   @IsInt({ message: 'ERROR: INVALID ID' })
-  @Length(1,2,{message: 'ERROR'})
+ 
   sets: number;
 
   @IsNotEmpty()
   @IsInt({ message: 'ERROR: INVALID ID' })
-  @Length(1,2,{message: 'ERROR'})
+  
   reps: number;
 
+@IsNotEmpty()
+ @IsInt({ message: 'ERROR: INVALID ID' })
+ 
+ workoutId: number;
+  
+ 
 }
 
-
+ 
 export class WorkoutForm
 {
   @IsNotEmpty()
@@ -38,4 +44,27 @@ export class WorkoutForm
   @IsInt({ message: 'ERROR: INVALID' })
   @Length(1, 2, {message: 'ERROR: Sets SHOULD be between 1 and 10',})
   time: number
+}
+
+export class TrainerForm
+{
+
+  @IsNotEmpty()
+  @IsString()
+  firstname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  lastname: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  contact: number;
+
+
+
 }

@@ -8,14 +8,26 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  ParseFilePipe,
+  UploadedFile,
+ 
+  
   } from '@nestjs/common';
 import { parse } from 'querystring';
 
   import { TrainerService } from './trainer.service';
-  import { ExerciseForm , WorkoutForm} from './trainerForm.dto';
+  import { TrainerForm, ExerciseForm , WorkoutForm} from './trainerForm.dto';
   
+  import { FileInterceptor } from '@nestjs/platform-express';
+  
+  import { diskStorage } from 'multer';
+  
+
   @Controller('/trainer')
   export class TrainerController {
 
@@ -39,16 +51,16 @@ import { parse } from 'querystring';
       return this.trainerService.createWorkout(ndto);
     }
   
-    @Get('/findworkout/:id')
+    @Get('/findworkoutbyid/:id')
     getWorkoutByID(@Param('id', ParseIntPipe) id: number): any {
       return this.trainerService.getWorkoutByID(id);
     }
   
-    @Get('/findworkout2/:name')
+    @Get('/findworkoutbyname/:name')
     getWorkoutByName(@Param('name') name: String): any {
       return this.trainerService.getWorkoutByName(name);
     }
-
+ 
     @Get('/showallworkouts')
     getworkoutlist(@Query() qry: any): any {
     return this.trainerService.getworkoutlist();
@@ -67,7 +79,17 @@ import { parse } from 'querystring';
     ): any {
       return this.trainerService.updateWorkout(mydto, id);
     }
-  ////////////////////////////////////////////////////////////////////////////////
+
+    @Get('/findworkoutbyexerciseid/:id')
+    getWorkoutByExerciseId(@Param('id', ParseIntPipe) id: number): any {
+          return this.trainerService.getWorkoutByExerciseId(id); 
+      }
+
+    @Get('/findworkoutbyexercisename/:name')
+      getWorkoutByExerciseName(@Param('name') name: string): any {
+            return this.trainerService.getWorkoutByExerciseName(name); 
+        }
+  //////////////////////////////////////////////////////////////////////////
   
   @Post('/createexercise')
   @UsePipes(new ValidationPipe())
@@ -87,11 +109,16 @@ import { parse } from 'querystring';
     return this.trainerService.getexerciselist();
   }
   
-  @Get('/findexercise/:id')
+  @Get('/findexercisebyid/:id')
     getExerciseByID(@Param('id', ParseIntPipe) id: number): any {
       return this.trainerService.getExerciseByID(id);
   }
 
+  @Get('/findexercisebyname/:name')
+    getExerciseByName(@Param('name') name: String): any {
+      return this.trainerService.getExerciseByName(name);
+    }
+  
   @Put('/updateexercise/:id')
   updateExercise(
       @Body() mydto: ExerciseForm,
@@ -99,16 +126,58 @@ import { parse } from 'querystring';
     ): any {
       return this.trainerService.updateExercise(mydto, id);
   }
+
+  @Get('/findexercisesbyworkoutid/:id')
+  getexercisesByWorkoutID(@Param('id', ParseIntPipe) id: number): any {
+        return this.trainerService.getexercisesByWorkoutID(id);
+    }
+
+    @Get('/findexercisesbyworkoutname/:name')
+    getexercisesByWorkoutName(@Param('name')name: String): any {
+          return this.trainerService.getexercisesByWorkoutName(name); 
+      }
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
-//@Post('/addexercise')
-///@UsePipes(new ValidationPipe())
-//addExerciseToWorkout(@Body() managerdto: ManagerForm)): any {
-//}
 
-@Get('/findexercisesbyworkout/:id')
-getexercisesByWorkoutID(@Param('id', ParseIntPipe) id: number): any {
-      return this.trainerService.getexercisesByWorkoutID(id);
+//@Post('/addexercise')
+// @UsePipes(new ValidationPipe())
+// addexercise(@Body() adto: ExerciseForm): any {
+ //    return this.trainerService.addexercise(adto);
+//  }
+
+//@Post('/addexercise')
+ // @UsePipes(new ValidationPipe())
+ // addexercise(@Body() exercisedto: ExerciseForm): any {
+ //     return this.trainerService.addexercise(exercisedto);
+ // }
+
+
+/*@Post('/signup')
+@UseInterceptors(FileInterceptor('myfile',
+{storage:diskStorage({
+  destination: './uploads',
+  filename: function (req, file, cb) {
+    cb(null,Date.now()+file.originalname)
   }
+})}))
+
+signup(@Body() mydto:TrainerForm,@UploadedFile(  new ParseFilePipe({
+  validators: [
+    new MaxFileSizeValidator({ maxSize: 16000 }),
+    new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
+  ],
+}),) file: Express.Multer.File){
+
+mydto.firstname = file.filename;  
+
+return this.trainerService.signup(mydto);
+console.log(file)
+}
+*/
+
+
+
+  
 
 }
