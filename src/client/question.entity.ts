@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ClientEntity } from "./client.entity";
 
 @Entity("question")
 export class QuestionEntity {
@@ -10,4 +11,10 @@ export class QuestionEntity {
 
     @Column()
     questionBy: string;
+
+    @Column()
+    clientId: number;
+
+    @ManyToOne(() => ClientEntity, (client) => client.questions)
+    client: ClientEntity
 }

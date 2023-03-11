@@ -9,4 +9,7 @@ export class QuestionForm{
     @IsString({message: "Cannot accept this type name"})
     @Length(3,40, {message: "Name of length must have at least 3 letters or maximum 40 letters"})
     questionBy: string;
+
+    @IsNotEmpty({message: "Client Empty"})
+    clientId: number;
 }

@@ -11,8 +11,13 @@ export class ClientController {
     constructor(private clientService: ClientService) {}
 
     @Get("/index")
-    getClient():any {
+    getIndex():any {
         return this.clientService.getIndex();
+    }
+
+    @Get("/dashboard")
+    getDashboard():any {
+        return this.clientService.getDashboard();
     }
 
     @Get("/nutritionistList")
@@ -33,6 +38,16 @@ export class ClientController {
     @Get("/findTrainer")
     getTrainer(@Query() qry:any): any {
         return this.clientService.getTrainer(qry);
+    }
+
+    @Get("/workout")
+    getWorkout():any {
+        return this.clientService.getWorkout();
+    }
+
+    @Get('/findExercisesByWorkoutname/:name')
+    getexercisesByWorkoutName(@Param('name')name: string): any {
+        return this.clientService.getexercisesByWorkoutName(name); 
     }
 
     @Post("/clientReg")
@@ -82,5 +97,15 @@ export class ClientController {
     @Get("/allQuestion")
     getAllQuestion():any {
         return this.clientService.getAllQuestion();
-    } 
+    }
+
+    @Get("/findQuestionById/:id")
+    getQuestionById(@Param('id', ParseIntPipe) id: number):any {
+        return this.clientService.getQuestionByName(id);
+    }
+
+    @Get("/findQuestionByName/:name")
+    getQuestionByName(@Param("name")name: string):any {
+        return this.clientService.getQuestionByName(name);
+    }
 }
