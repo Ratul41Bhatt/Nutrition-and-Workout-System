@@ -28,12 +28,9 @@
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-<<<<<<< HEAD
     "multer": "^1.4.5-lts.1",
-=======
     "express-session": "^1.17.3",
     "mysql2": "^3.1.2",
->>>>>>> ff53f57d7a2700b04260f50f7eb7be8d37f8a80f
     "pg": "^8.9.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",

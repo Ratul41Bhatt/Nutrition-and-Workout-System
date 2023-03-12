@@ -1,14 +1,14 @@
 import { IsInt, IsNotEmpty, MaxLength } from 'class-validator';
 
-export class NutritionistBlogForm {
+export class NutritionistDietForm {
   @IsNotEmpty({ message: 'This field cannot be empty' })
   @IsInt({ message: 'Invalid user ID' })
-  id: number;
+  clientId: number;
 
-  @IsNotEmpty({ message: 'Title must be fill up' })
-  title: string;
+  @IsNotEmpty({ message: 'This item must be fill up' })
+  foodList: string;
 
   @IsNotEmpty({ message: 'This field cannot be empty' })
   @MaxLength(2000, { message: 'Cannot write more than 2000 words' })
-  description: string;
+  schedule: string;
 }

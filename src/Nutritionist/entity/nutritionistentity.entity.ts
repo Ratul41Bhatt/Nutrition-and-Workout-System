@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { NutritionistDietEntity } from './nutritionistDiet.entity';
 
 @Entity('nutritionist')
 export class NutritionistEntity {
@@ -28,4 +29,7 @@ export class NutritionistEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => NutritionistDietEntity, (DietPlan) => DietPlan.planNo)
+  DietPlan: NutritionistDietEntity[];
 }

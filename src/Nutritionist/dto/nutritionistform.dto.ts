@@ -30,9 +30,9 @@ export class NutritionistForm {
   //Phone
   @IsNotEmpty({ message: 'Phone cannot be empty' })
   @IsInt({ message: 'Cannot accept this type name' })
-  @Length(11, 11, {
-    message: 'Phone must have 11 numbers',
-  })
+  // @Length(11, 11, {
+  //   message: 'Phone must have 11 numbers',
+  // })
   phone: number;
 
   //Email
@@ -41,11 +41,11 @@ export class NutritionistForm {
   email: string;
 
   //Nid
-  @IsNotEmpty({ message: 'Phone cannot be empty' })
+  @IsNotEmpty({ message: 'Nid cannot be empty' })
   @IsInt({ message: 'Cannot accept this type name' })
-  @Length(11, 11, {
-    message: 'Phone must have 11 numbers',
-  })
+  // @Length(11, 11, {
+  //   message: 'Nid must have 11 numbers',
+  // })
   nid: number;
 
   //Date of Birth
@@ -64,5 +64,5 @@ export class NutritionistForm {
   })
   password: string;
 
-  avatar: string;
+  filename: string;
 }

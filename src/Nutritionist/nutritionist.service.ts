@@ -3,13 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm/dist';
 import { Repository } from 'typeorm';
 import { NutritionistEntity } from './entity/nutritionistentity.entity';
 import { NutritionistForm } from './dto/nutritionistform.dto';
-import { NutritionistBlogForm } from './dto/nutritionistBlogForm.dto';
+import { NutritionistDietForm } from './dto/nutritionistDietForm.dto';
+import { NutritionistDietEntity } from './entity/nutritionistDiet.entity';
+import * as bcrypt from 'bcrypt';
+import { Email } from './dto/email.dto';
 
 @Injectable()
 export class NutritionistService {
+  mailerService: any;
   constructor(
     @InjectRepository(NutritionistEntity)
     private NRepo: Repository<NutritionistEntity>,
+    @InjectRepository(NutritionistDietEntity)
+    private NDRepo: Repository<NutritionistDietEntity>,
   ) {}
 
   //Available user
@@ -33,75 +39,116 @@ export class NutritionistService {
   }
 
   //Signup
-  signupN(ndto: NutritionistForm): any {
-    const nAccount = new NutritionistEntity();
-    nAccount.firstname = ndto.firstname;
-    nAccount.lastname = ndto.lastname;
-    nAccount.address = ndto.address;
-    nAccount.phone = ndto.phone;
-    nAccount.email = ndto.email;
-    nAccount.nid = ndto.nid;
-    nAccount.dob = ndto.dob;
-    nAccount.password = ndto.password;
-    return this.NRepo.save(nAccount);
+  async signup(ndto: NutritionistForm): Promise<any> {
+    try {
+      const salt = await bcrypt.genSalt();
+      const hassedpassed = await bcrypt.hash(ndto.password, salt);
+      ndto.password = hassedpassed;
+      return this.NRepo.save(ndto);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  getNutritionistByID(id: number): any {
-    return 'Nutritionist id is ' + id;
+  async upload(nDto) {
+    const salt = await bcrypt.genSalt(10);
+    const hassedpassed = await bcrypt.hash(nDto.password, salt);
+    nDto.password = hassedpassed;
+    return this.NRepo.save(nDto);
   }
 
+  //Signin
+  async signin(ndto: NutritionistForm): Promise<any> {
+    console.log(ndto.password);
+    const mydata = await this.NRepo.findOneBy({ email: ndto.email });
+    const isMatch = await bcrypt.compare(ndto.password, mydata.password);
+    if (isMatch) {
+      return await this.NRepo.findOneBy({ email: ndto.email });
+    } else {
+      return 0;
+    }
+  }
+
+  //Find by ID
+  async getNutritionistByID(id: number): Promise<any> {
+    const Ninfo = await this.NRepo.findOneBy({ id: id });
+    if (Ninfo != null) {
+      return Ninfo;
+    } else {
+      return 'No Nutritionist found';
+    }
+  }
+
+  //Find by query
   getNutritionistByName(qry: any): any {
     return 'Nutritionist id is ' + qry.id + 'and Name is ' + qry.name;
   }
 
-  updateNutritionist(name: string, id: number): any {
-    return 'Nutritionist updated name: ' + name + ' and id is ' + id;
+  //UpdateN
+  async updateNutritionist(ndto: NutritionistForm, id: number): Promise<any> {
+    return await this.NRepo.update(id, ndto);
   }
 
-  updateNutritionistByID(ndto: NutritionistForm, id: number): any {
-    return (
-      'Update admin where id ' +
-      id +
-      ' and change name to ' +
-      ndto.firstname +
-      ' email: ' +
-      ndto.email +
-      ' Password: ' +
-      ndto.password
-    );
+  //Delete
+  async deleteNutritionistByID(id: number): Promise<any> {
+    return await this.NRepo.delete(id);
   }
 
-  deleteNutritionistByID(id: number): any {
-    return 'Delete id is ' + id;
+  //Create plan
+  async createplan(dietdto: NutritionistDietForm): Promise<any> {
+    try {
+      const ndAccount = new NutritionistDietEntity();
+      ndAccount.clientId = dietdto.clientId;
+      ndAccount.foodList = dietdto.foodList;
+      ndAccount.schedule = dietdto.schedule;
+      return await this.NDRepo.save(ndAccount);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  createblog(blogdto: NutritionistBlogForm): any {
-    return (
-      'Title: ' +
-      blogdto.title +
-      ' Desc: ' +
-      blogdto.description +
-      'Id: ' +
-      blogdto.id
-    );
+  //Get plan
+  async getPlanByID(id: number): Promise<any> {
+    const NDinfo = await this.NDRepo.findOneBy({ id: id });
+    if (NDinfo != null) {
+      return NDinfo;
+    } else {
+      return 'No Plan found';
+    }
   }
 
-  getBlogByID(id: number): any {
-    return 'Blog id is ' + id;
+  //Update plan
+  async updatePlanByID(
+    dietdto: NutritionistDietForm,
+    id: number,
+  ): Promise<any> {
+    return await this.NDRepo.update(id, dietdto);
   }
 
-  updateBlogByID(blogdto: NutritionistBlogForm, id: number): any {
-    return (
-      'blog updated title: ' +
-      blogdto.title +
-      ' update description ' +
-      blogdto.description +
-      ' blog id: ' +
-      id
-    );
+  //Delete plan
+  async deletePlan(id: number): Promise<any> {
+    return await this.NDRepo.delete(id);
   }
 
-  deleteBlog(id: number): any {
-    return 'Delete id is ' + id;
+  //Send mail
+  async sendEmail(emaildto: Email) {
+    return await this.mailerService.sendMail({
+      to: emaildto.to,
+      subject: emaildto.subject,
+      text: emaildto.text,
+    });
   }
 }
+
+// updateNutritionistByID(ndto: NutritionistForm, id: number): any {
+//   return (
+//     'Update admin where id ' +
+//     id +
+//     ' and change name to ' +
+//     ndto.firstname +
+//     ' email: ' +
+//     ndto.email +
+//     ' Password: ' +
+//     ndto.password
+//   );
+// }
