@@ -18,4 +18,6 @@ export class ClientForm{
     @IsInt({message: "Invalid age"})
     @Min(16, {message: "You must be at least 16+ for join"})
     age: number;
+
+    filename: string;
 }

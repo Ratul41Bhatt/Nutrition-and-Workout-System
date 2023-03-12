@@ -2,9 +2,11 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} f
 import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from "./clientupdateform.dto";
 import { ClientService } from "./client.service";
-import { UsePipes } from "@nestjs/common/decorators";
-import { ValidationPipe } from "@nestjs/common/pipes";
+import { UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common/decorators";
+import { FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, ValidationPipe } from "@nestjs/common/pipes";
 import { QuestionForm } from "./question.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
 
 @Controller('/client')
 export class ClientController {
@@ -107,5 +109,26 @@ export class ClientController {
     @Get("/findQuestionByName/:name")
     getQuestionByName(@Param("name")name: string):any {
         return this.clientService.getQuestionByName(name);
+    }
+
+    @Post('/signup')
+    @UseInterceptors(FileInterceptor('picture',
+    {
+        storage:diskStorage({
+            destination: './uploads',
+            filename: function(req, file, cb) {
+                cb(null, Date.now()+file.originalname)
+            }
+        })
+    }
+    ))
+    signup(@Body() clientDto: ClientForm, @UploadedFile( new ParseFilePipe({
+        validators: [
+            new MaxFileSizeValidator({ maxSize: 200000}),
+            new FileTypeValidator({ fileType: 'png|jpg|jpeg|'}),
+        ],
+    }),) file: Express.Multer.File) {
+        clientDto.filename = file.filename;
+        return this.clientService.signup(clientDto);
     }
 }

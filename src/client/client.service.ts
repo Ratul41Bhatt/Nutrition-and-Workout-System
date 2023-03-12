@@ -8,6 +8,7 @@ import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from './clientupdateform.dto';
 import { QuestionForm } from './question.dto';
 import { QuestionEntity } from './question.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ClientService {
@@ -112,5 +113,12 @@ export class ClientService {
         questions: true
       },
     });
+  }
+
+  async signup(clientDto) {
+    const salt = await bcrypt.genSalt(10);
+    const hassedpassed = await bcrypt.hash(clientDto.password, salt);
+    clientDto.password = hassedpassed;
+    return this.ClientRepo.save(clientDto);
   }
 }
