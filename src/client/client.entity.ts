@@ -1,4 +1,3 @@
-
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("client")
@@ -17,4 +16,10 @@ export class ClientEntity {
 
     @Column()
     age: number;
+
+    @Column()
+    filename: string;
+
+    @OneToMany (() => QuestionEntity, (question) => question.client)
+    questions: QuestionEntity[]
 }

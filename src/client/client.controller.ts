@@ -2,17 +2,24 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} f
 import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from "./clientupdateform.dto";
 import { ClientService } from "./client.service";
-import { UsePipes } from "@nestjs/common/decorators";
-import { ValidationPipe } from "@nestjs/common/pipes";
+import { UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common/decorators";
+import { FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, ValidationPipe } from "@nestjs/common/pipes";
 import { QuestionForm } from "./question.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
 
 @Controller('/client')
 export class ClientController {
     constructor(private clientService: ClientService) {}
 
     @Get("/index")
-    getClient():any {
+    getIndex():any {
         return this.clientService.getIndex();
+    }
+
+    @Get("/dashboard")
+    getDashboard():any {
+        return this.clientService.getDashboard();
     }
 
     @Get("/nutritionistList")
@@ -33,6 +40,16 @@ export class ClientController {
     @Get("/findTrainer")
     getTrainer(@Query() qry:any): any {
         return this.clientService.getTrainer(qry);
+    }
+
+    @Get("/workout")
+    getWorkout():any {
+        return this.clientService.getWorkout();
+    }
+
+    @Get('/findExercisesByWorkoutname/:name')
+    getexercisesByWorkoutName(@Param('name')name: string): any {
+        return this.clientService.getexercisesByWorkoutName(name); 
     }
 
     @Post("/clientReg")
@@ -82,5 +99,36 @@ export class ClientController {
     @Get("/allQuestion")
     getAllQuestion():any {
         return this.clientService.getAllQuestion();
-    } 
+    }
+
+    @Get("/findQuestionById/:id")
+    getQuestionById(@Param('id', ParseIntPipe) id: number):any {
+        return this.clientService.getQuestionByName(id);
+    }
+
+    @Get("/findQuestionByName/:name")
+    getQuestionByName(@Param("name")name: string):any {
+        return this.clientService.getQuestionByName(name);
+    }
+
+    @Post('/signup')
+    @UseInterceptors(FileInterceptor('picture',
+    {
+        storage:diskStorage({
+            destination: './uploads',
+            filename: function(req, file, cb) {
+                cb(null, Date.now()+file.originalname)
+            }
+        })
+    }
+    ))
+    signup(@Body() clientDto: ClientForm, @UploadedFile( new ParseFilePipe({
+        validators: [
+            new MaxFileSizeValidator({ maxSize: 200000}),
+            new FileTypeValidator({ fileType: 'png|jpg|jpeg|'}),
+        ],
+    }),) file: Express.Multer.File) {
+        clientDto.filename = file.filename;
+        return this.clientService.signup(clientDto);
+    }
 }

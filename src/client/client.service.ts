@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TrainerEntity } from 'src/Trainer/trainer.entity';
+import { WorkoutEntity, ExerciseEntity } from 'src/Trainer/trainer.entity';
 import { Repository } from 'typeorm';
 import { ClientEntity } from './client.entity';
 
@@ -8,20 +8,27 @@ import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from './clientupdateform.dto';
 import { QuestionForm } from './question.dto';
 import { QuestionEntity } from './question.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ClientService {
   constructor (
     @InjectRepository(ClientEntity)
     private ClientRepo: Repository<ClientEntity>,
-    @InjectRepository(TrainerEntity)
-    private workoutRepo: Repository<TrainerEntity>,
+    @InjectRepository(WorkoutEntity)
+    private workoutRepo: Repository<WorkoutEntity>,
+    @InjectRepository(ExerciseEntity)
+    private exercise: Repository<ExerciseEntity>,
     @InjectRepository(QuestionEntity)
     private QuestionRepo: Repository<QuestionEntity>,
   ) {}
 
   getIndex():any {
-    return this.ClientRepo.find();
+    return "User Index";
+  }
+
+  getDashboard():any {
+    return "User Dashboard";
   }
 
   getNutritionistList():string {
@@ -29,7 +36,7 @@ export class ClientService {
   }
 
   getTrainerList():any {
-    return this.workoutRepo.find();
+    return "Get All Trainer Info";
   }
 
   getNutritionist(qry):any {
@@ -38,6 +45,19 @@ export class ClientService {
 
   getTrainer(qry):any {
     return "Location: "+qry.location+" and Hours:"+qry.hours;
+  }
+
+  getWorkout():any {
+    return this.workoutRepo.find();
+  }
+
+  getexercisesByWorkoutName(name):any {
+    return  this.workoutRepo.find({
+      where: {workoutname: name},
+      relations: {
+        exercises: true,
+      },
+    });
   }
 
   NewClient(clientDto:ClientForm):any {
@@ -61,6 +81,7 @@ export class ClientService {
     const Questions = new QuestionEntity()
     Questions.question = quesDto.question;
     Questions.questionBy = quesDto.questionBy;
+    Questions.clientId = quesDto.clientId;
     return this.QuestionRepo.save(Questions);
   }
 
@@ -74,5 +95,30 @@ export class ClientService {
 
   getAllQuestion():any {
     return this.QuestionRepo.find();
-  } 
+  }
+
+  getQuestionById(id):any {
+    return this.ClientRepo.find({
+      where: { id: id },
+      relations: {
+        questions: true
+      },
+    });
+  }
+
+  getQuestionByName(name):any {
+    return this.ClientRepo.find({
+      where: { name: name },
+      relations: {
+        questions: true
+      },
+    });
+  }
+
+  async signup(clientDto) {
+    const salt = await bcrypt.genSalt(10);
+    const hassedpassed = await bcrypt.hash(clientDto.password, salt);
+    clientDto.password = hassedpassed;
+    return this.ClientRepo.save(clientDto);
+  }
 }
