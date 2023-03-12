@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
 import { TrainerEntity, ExerciseEntity, WorkoutEntity} from './trainer.entity';
-import { MailerService } from "@nestjs-modules/mailer/dist";
+//import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class TrainerService {
@@ -173,7 +173,7 @@ else {
 }
 
 }
-
+/*
 async sendEmail(mydata){
   return  this.mailerService.sendMail({
          to: mydata.email,
@@ -181,7 +181,7 @@ async sendEmail(mydata){
          text: mydata.text, 
        });
  
- }
+ }*/
 
 }
  
