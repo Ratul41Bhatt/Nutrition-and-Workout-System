@@ -17,7 +17,7 @@ import {  TrainerEntity, ExerciseEntity, WorkoutEntity } from './trainer.entity'
                  secure: true,
                  auth: {
                      user: 'snasir2194@gmail.com',
-                     pass: 'zohzbcasbousdrtu'
+                     pass: 'ukwvbdgbdqdeubkf'
                  },
                 }
     }),

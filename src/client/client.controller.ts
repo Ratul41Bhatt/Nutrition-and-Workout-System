@@ -42,15 +42,16 @@ export class ClientController {
         return this.clientService.getTrainer(qry);
     }
 
+    /*
     @Get("/workout")
     getWorkout():any {
         return this.clientService.getWorkout();
-    }
+    } */
 
-    @Get('/findExercisesByWorkoutname/:name')
+   /* @Get('/findExercisesByWorkoutname/:name')
     getexercisesByWorkoutName(@Param('name')name: string): any {
         return this.clientService.getexercisesByWorkoutName(name); 
-    }
+    }*/
 
     @Post("/clientReg")
     @UsePipes(new ValidationPipe())
