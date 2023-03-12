@@ -1,9 +1,9 @@
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm/dist';
 import { Repository } from 'typeorm';
-import { NutritionistEntity } from './nutritionistentity.entity';
-import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
+import { NutritionistEntity } from './entity/nutritionistentity.entity';
+import { NutritionistForm } from './dto/nutritionistform.dto';
+import { NutritionistBlogForm } from './dto/nutritionistBlogForm.dto';
 
 @Injectable()
 export class NutritionistService {
@@ -12,18 +12,36 @@ export class NutritionistService {
     private NRepo: Repository<NutritionistEntity>,
   ) {}
 
-  getIndex(): any {
-    return this.NRepo.find();
+  //Available user
+  async getIndex(id: number): Promise<any> {
+    const userInfo = await this.NRepo.findOneBy({ id: id });
+    if (userInfo != null) {
+      return userInfo;
+    } else {
+      return 'No data found';
+    }
   }
 
-  getDashboard(): string {
-    return 'Nutritionist dashboard';
+  //NDashboard
+  async getDashboard(id: number): Promise<any> {
+    const userInfo = await this.NRepo.findOneBy({ id: id });
+    if (userInfo != null) {
+      return userInfo;
+    } else {
+      return 'No data found';
+    }
   }
 
-  createNutritionsist(ndto: NutritionistForm): any {
+  //Signup
+  signupN(ndto: NutritionistForm): any {
     const nAccount = new NutritionistEntity();
-    nAccount.name = ndto.name;
+    nAccount.firstname = ndto.firstname;
+    nAccount.lastname = ndto.lastname;
+    nAccount.address = ndto.address;
+    nAccount.phone = ndto.phone;
     nAccount.email = ndto.email;
+    nAccount.nid = ndto.nid;
+    nAccount.dob = ndto.dob;
     nAccount.password = ndto.password;
     return this.NRepo.save(nAccount);
   }
@@ -45,7 +63,7 @@ export class NutritionistService {
       'Update admin where id ' +
       id +
       ' and change name to ' +
-      ndto.name +
+      ndto.firstname +
       ' email: ' +
       ndto.email +
       ' Password: ' +
@@ -87,4 +105,3 @@ export class NutritionistService {
     return 'Delete id is ' + id;
   }
 }
-

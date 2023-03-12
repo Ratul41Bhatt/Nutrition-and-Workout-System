@@ -6,10 +6,25 @@ export class NutritionistEntity {
   id: number;
 
   @Column()
-  name: string;
+  firstname: string;
+
+  @Column()
+  lastname: string;
+
+  @Column()
+  address: string;
+
+  @Column()
+  phone: number;
 
   @Column()
   email: string;
+
+  @Column()
+  nid: number;
+
+  @Column()
+  dob: string;
 
   @Column()
   password: string;

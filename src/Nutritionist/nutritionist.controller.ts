@@ -8,31 +8,86 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { NutritionistService } from './nutritionist.service';
 import { UsePipes } from '@nestjs/common/decorators';
-import { ValidationPipe } from '@nestjs/common/pipes';
-import { NutritionistBlogForm, NutritionistForm } from './nutritionistForm.dto';
+import {
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  ValidationPipe,
+} from '@nestjs/common/pipes';
+import { NutritionistForm } from './dto/nutritionistform.dto';
+import { NutritionistBlogForm } from './dto/nutritionistBlogForm.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('/nutritionist')
 export class NutritionistController {
   constructor(private nutritionistService: NutritionistService) {}
 
-  @Get('/index')
-  getNutritionist(): any {
-    return this.nutritionistService.getIndex();
+  // Show Available user
+  @Get('/index/:id')
+  getNutritionist(@Param('id', ParseIntPipe) id: number): any {
+    return this.nutritionistService.getIndex(id);
   }
 
-  @Get('/dashboard')
-  getNutritionistDashboard(): any {
-    return this.nutritionistService.getDashboard();
+  //Dashboard
+  @Get('/dashboard/:id')
+  getNutritionistDashboard(@Param('id', ParseIntPipe) id: number): any {
+    return this.nutritionistService.getDashboard(id);
   }
 
-  @Post('/createnutritionsis')
-  createnutritionsis(@Body() ndto: NutritionistForm): any {
-    return this.nutritionistService.createNutritionsist(ndto);
+  //Signup
+  @Post('/signup')
+  @UseInterceptors(
+    FileInterceptor('myfile', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: function (req, file, cb) {
+          cb(null, Date.now() + file.originalname);
+        },
+      }),
+    }),
+  )
+  signup(
+    @Body() ndto: NutritionistForm,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 16000 }),
+          new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    ndto.avatar = file.filename;
+
+    return this.nutritionistService.signupN(ndto);
+    console.log(file);
   }
 
+  //Signup
+  // @Post('/signup')
+  // @UseInterceptors(
+  //   FileInterceptor('myfile', {
+  //     storage: diskStorage({
+  //       destination: './uploads',
+  //       filename: function (req, file, cb) {
+  //         cb(null, Date.now() + file.originalname);
+  //       },
+  //     }),
+  //   }),
+  // )
+  // @UsePipes(new ValidationPipe())
+  // singupN(@Body() ndto: NutritionistForm): any {
+  //   return this.nutritionistService.signupN(ndto);
+  // }
+
+  //Finduser
   @Get('/findnutritionist/:id')
   getUserByID(@Param('id', ParseIntPipe) id: number): any {
     return this.nutritionistService.getNutritionistByID(id);
