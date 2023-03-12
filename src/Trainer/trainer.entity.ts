@@ -1,26 +1,5 @@
-//import { UserEntity } from 'src/user/user.entity';
+
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany,ManyToOne } from 'typeorm';
-
-@Entity("Exercise")
-export class ExerciseEntity
-{
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  exercisename: string;
-
-  @Column()
-  sets: number;
-
-  @Column()
-  reps: number;
-  
-@ManyToOne(() => WorkoutEntity, (workout) => workout.exercise)
-workout: ExerciseEntity  
-
-}
-
 
 
 @Entity("Workout")
@@ -36,6 +15,56 @@ export class WorkoutEntity
   time: number;
 
   @OneToMany(() => ExerciseEntity, (exercise) => exercise.workout)
-  exercise: WorkoutEntity[]
+  exercises: ExerciseEntity[]
+ 
+}
 
+
+@Entity("Exercise")
+export class ExerciseEntity
+{
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  exercisename: string;
+
+  @Column()
+  sets: number;
+
+  @Column()
+  reps: number;
+
+ @Column()
+ workoutId: number ;
+
+  
+@ManyToOne(() => WorkoutEntity, (workout) => workout.exercises)
+workout: WorkoutEntity  
+ 
+}
+
+@Entity("Trainer")
+export class TrainerEntity
+{
+  @PrimaryGeneratedColumn()
+  id: number;
+  
+  @Column()
+  firstname: string;
+
+  @Column()
+  lastname: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column()
+  contact: number;
+
+   
+ 
 }

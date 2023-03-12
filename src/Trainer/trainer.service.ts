@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
-import {ExerciseEntity, WorkoutEntity} from './trainer.entity';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import * as bcrypt from 'bcrypt';
+import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
+import { TrainerEntity, ExerciseEntity, WorkoutEntity} from './trainer.entity';
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class TrainerService {
@@ -12,7 +14,11 @@ export class TrainerService {
     @InjectRepository(ExerciseEntity)
     private exerciserepo: Repository<ExerciseEntity>,
     @InjectRepository(WorkoutEntity)
-    private workoutrepo: Repository<WorkoutEntity>) {}
+    private workoutrepo: Repository<WorkoutEntity>,
+    @InjectRepository(TrainerEntity)
+    private trainerrepo: Repository<TrainerEntity>,
+    private mailerService: MailerService
+    ) {}
 
     
 getIndex(): string 
@@ -33,13 +39,11 @@ createWorkout(dto: WorkoutForm): any
 
 getWorkoutByID(id: number): any
   {
-    return this.workoutrepo.find({ 
-      where: {id:id},
-       relations: {
-      exercise : true,
-   },
-  });
-  }
+   return this.workoutrepo.find({ 
+     where: {id:id},
+    
+ });
+}
 
 getWorkoutByName(name): any
 {
@@ -62,18 +66,32 @@ getworkoutlist():any
 {
     return this.workoutrepo.find();
 }
-  
+
+getWorkoutByExerciseId(id):any
+{
+  return this.exerciserepo.find({        
+    where: {id: id},
+relations: {
+    workout: true,
+},
+});
+}
+
+getWorkoutByExerciseName(name):any
+{
+  return this.exerciserepo.find({        
+    where: {exercisename: name},
+relations: {
+    workout: true,
+},
+});
+}
 ///////////////////////////////////////////////
  
 
 createexercise(mydto:ExerciseForm):any 
 {   
-  //const adminaccount = new AdminEntity()
-   // adminaccount.name = mydto.name;
-  //  adminaccount.email = mydto.email;
-   // adminaccount.password = mydto.password;
-    //adminaccount.address = mydto.address;
-   //return this.adminRepo.save(adminaccount);
+  
   return this.exerciserepo.save(mydto);
 }
 
@@ -82,6 +100,14 @@ getExerciseByID(id: number): any
 {
     return this.exerciserepo.find({ 
       where: {id:id},
+       
+  });
+}
+
+getExerciseByName(name): any
+{
+    return this.exerciserepo.find({ 
+      where: {exercisename:name}
        
   });
 }
@@ -103,11 +129,59 @@ getexerciselist():any
 
 getexercisesByWorkoutID(id):any {
   return this.workoutrepo.find({ 
-          where: {id:id},
+          where: {id: id},
       relations: {
-          exercise: true,
+          exercises: true,
       },
    });
 }
 
+getexercisesByWorkoutName(name):any {
+  return this.workoutrepo.find({        
+    where: {workoutname: name},
+relations: {
+    exercises: true,
+},
+});
 }
+ /*
+addexercise(mydto: ExerciseForm):any{
+  const exerciseaccount = new ExerciseEntity() 
+  exerciseaccount.exercisename = mydto.exercisename;
+  exerciseaccount.sets = mydto.sets;
+  exerciseaccount.reps = mydto.reps;   //this was used to insert a single value without changing all values
+ /exerciseaccount.workoutId = mydto.workoutId;
+   return this.exerciserepo.save(exerciseaccount);
+}*/
+
+async signup(mydto) {
+  const salt = await bcrypt.genSalt(8);
+  const hassedpassed = await bcrypt.hash(mydto.password, salt);
+  mydto.password= hassedpassed;
+  return this.trainerrepo.save(mydto);
+  }
+
+  async signin(mydto){
+    console.log(mydto.password);
+const mydata= await this.trainerrepo.findOneBy({email: mydto.email});
+const isMatch= await bcrypt.compare(mydto.password, mydata.password);
+if(isMatch) {
+return 1;
+}
+else {
+    return 0;
+}
+
+}
+
+async sendEmail(mydata){
+  return  this.mailerService.sendMail({
+         to: mydata.email,
+         subject: mydata.subject,
+         text: mydata.text, 
+       });
+ 
+ }
+
+}
+ 
