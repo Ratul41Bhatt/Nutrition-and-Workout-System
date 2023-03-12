@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
-import { ExerciseEntity, WorkoutEntity} from './trainer.entity';
+import { TrainerEntity, ExerciseEntity, WorkoutEntity} from './trainer.entity';
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class TrainerService {
@@ -15,8 +16,8 @@ export class TrainerService {
     private exerciserepo: Repository<ExerciseEntity>,
     @InjectRepository(WorkoutEntity)
     private workoutrepo: Repository<WorkoutEntity>,
-   // @InjectRepository(TrainerEntity)
-   // private //trainerrepo: Repository<TrainerEntity>
+    @InjectRepository(TrainerEntity)
+    private trainerrepo: Repository<TrainerEntity>
     ) {}
 
     
@@ -151,14 +152,36 @@ addexercise(mydto: ExerciseForm):any{
   exerciseaccount.reps = mydto.reps;   //this was used to insert a single value without changing all values
  /exerciseaccount.workoutId = mydto.workoutId;
    return this.exerciserepo.save(exerciseaccount);
-}
+}*/
+
 async signup(mydto) {
-  const salt = await bcrypt.genSalt();
+  const salt = await bcrypt.genSalt(8);
   const hassedpassed = await bcrypt.hash(mydto.password, salt);
   mydto.password= hassedpassed;
   return this.trainerrepo.save(mydto);
   }
-*/
+
+  async signin(mydto){
+    console.log(mydto.password);
+const mydata= await this.trainerrepo.findOneBy({email: mydto.email});
+const isMatch= await bcrypt.compare(mydto.password, mydata.password);
+if(isMatch) {
+return 1;
+}
+else {
+    return 0;
+}
+
+}
+
+async sendEmail(mydata){
+  return  this.mailerService.sendMail({
+         to: mydata.email,
+         subject: mydata.subject,
+         text: mydata.text, 
+       });
+ 
+ }
 
 }
  

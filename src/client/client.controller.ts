@@ -22,8 +22,8 @@ export class ClientController {
 
     @Get("/trainerList")
     getTrainerList():any {
-        return this.clientService.getTrainerList();
-    }
+       return this.clientService.getTrainerList();
+  }
 
     @Get("/findNutritionist")
     getNutritionist(@Query() qry:any): any {

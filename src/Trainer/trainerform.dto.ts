@@ -5,6 +5,7 @@ import {
   IsString,
   Length,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 
 
@@ -32,7 +33,7 @@ export class ExerciseForm
   
  
 }
-
+ 
  
 export class WorkoutForm
 {
@@ -62,9 +63,16 @@ export class TrainerForm
   email: string;
 
   @IsNotEmpty()
+  @IsEmail()
+  @Length(3,10)
+  password: string;
+
+  @IsNotEmpty()
   @IsInt()
+  @MaxLength(11)
+  @MinLength(11)
   contact: number;
+ 
 
 
-
-}
+} 
