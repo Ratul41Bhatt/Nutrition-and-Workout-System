@@ -15,10 +15,7 @@ export class ClientService {
   constructor (
     @InjectRepository(ClientEntity)
     private ClientRepo: Repository<ClientEntity>,
-    @InjectRepository(WorkoutEntity)
-    private workoutRepo: Repository<WorkoutEntity>,
-    @InjectRepository(ExerciseEntity)
-    private exercise: Repository<ExerciseEntity>,
+
     @InjectRepository(QuestionEntity)
     private QuestionRepo: Repository<QuestionEntity>,
   ) {}

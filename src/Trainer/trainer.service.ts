@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import * as bcrypt from 'bcrypt';
 import { ExerciseForm, WorkoutForm } from './trainerForm.dto';
 import { TrainerEntity, ExerciseEntity, WorkoutEntity} from './trainer.entity';
-//import { MailerService } from "@nestjs-modules/mailer/dist";
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class TrainerService {
@@ -16,7 +16,8 @@ export class TrainerService {
     @InjectRepository(WorkoutEntity)
     private workoutrepo: Repository<WorkoutEntity>,
     @InjectRepository(TrainerEntity)
-    private trainerrepo: Repository<TrainerEntity>
+    private trainerrepo: Repository<TrainerEntity>,
+    private mailerService: MailerService
     ) {}
 
     
@@ -172,7 +173,7 @@ else {
 }
 
 }
-/*
+
 async sendEmail(mydata){
   return  this.mailerService.sendMail({
          to: mydata.email,
@@ -180,7 +181,7 @@ async sendEmail(mydata){
          text: mydata.text, 
        });
  
- }*/
+ }
 
 }
  
