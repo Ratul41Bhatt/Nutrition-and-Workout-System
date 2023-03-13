@@ -5,17 +5,21 @@ import { NutritionistEntity } from './entity/nutritionistentity.entity';
 import { NutritionistForm } from './dto/nutritionistform.dto';
 import { NutritionistDietForm } from './dto/nutritionistDietForm.dto';
 import { NutritionistDietEntity } from './entity/nutritionistDiet.entity';
+import { ClientEntity } from '../client/client.entity';
 import * as bcrypt from 'bcrypt';
+import { MailerService } from '@nestjs-modules/mailer/dist';
+
 import { Email } from './dto/email.dto';
 
 @Injectable()
 export class NutritionistService {
-  mailerService: any;
   constructor(
     @InjectRepository(NutritionistEntity)
     private NRepo: Repository<NutritionistEntity>,
     @InjectRepository(NutritionistDietEntity)
     private NDRepo: Repository<NutritionistDietEntity>,
+    private CRepo: Repository<ClientEntity>,
+    private mailerService: MailerService,
   ) {}
 
   //Available user
@@ -35,18 +39,6 @@ export class NutritionistService {
       return userInfo;
     } else {
       return 'No data found';
-    }
-  }
-
-  //Signup
-  async signup(ndto: NutritionistForm): Promise<any> {
-    try {
-      const salt = await bcrypt.genSalt();
-      const hassedpassed = await bcrypt.hash(ndto.password, salt);
-      ndto.password = hassedpassed;
-      return this.NRepo.save(ndto);
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -131,12 +123,52 @@ export class NutritionistService {
   }
 
   //Send mail
-  async sendEmail(emaildto: Email) {
+  async sendEmail(mydata) {
     return await this.mailerService.sendMail({
-      to: emaildto.to,
-      subject: emaildto.subject,
-      text: emaildto.text,
+      to: mydata.email,
+      subject: mydata.subject,
+      text: mydata.text,
     });
+  }
+
+  //Get user
+  async getUser(id: number): Promise<any> {
+    const userInfo = await this.CRepo.findOneBy({ id: id });
+    if (userInfo != null) {
+      return userInfo;
+    } else {
+      return 'No data found';
+    }
+  }
+
+  //Get all plan
+  async getAllPlan(): Promise<any> {
+    const allPlan = await this.NDRepo.find();
+    if (allPlan != null) {
+      return allPlan;
+    } else {
+      return 'No data found';
+    }
+  }
+
+  //find planby client id
+  async getPlanByid(clientid): Promise<any> {
+    const dietplan = await this.NDRepo.findOneBy({ id: clientid });
+    if (dietplan != null) {
+      return dietplan;
+    } else {
+      return 'No data found';
+    }
+  }
+
+  //all client
+  async getClient(): Promise<any> {
+    const allClient = await this.CRepo.find();
+    if (allClient != null) {
+      return allClient;
+    } else {
+      return 'No data found';
+    }
   }
 }
 

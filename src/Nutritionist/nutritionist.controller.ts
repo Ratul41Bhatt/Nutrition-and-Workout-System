@@ -43,13 +43,6 @@ export class NutritionistController {
     return this.nutritionistService.getDashboard(id);
   }
 
-  //  Signup
-  @Post('/signup')
-  @UsePipes(new ValidationPipe())
-  singupN(@Body() ndto: NutritionistForm): any {
-    return this.nutritionistService.signup(ndto);
-  }
-
   //Signin
   @Get('/signin')
   signin(@Session() session, @Body() ndto: NutritionistForm) {
@@ -130,12 +123,12 @@ export class NutritionistController {
 
   //Send mail
   @Post('/sendemail')
-  sendEmail(@Body() emaildto: Email) {
-    return this.nutritionistService.sendEmail(emaildto);
+  sendEmail(@Body() mydata) {
+    return this.nutritionistService.sendEmail(mydata);
   }
 
   //file upload
-  @Post('/upload')
+  @Post('/signup')
   @UseInterceptors(
     FileInterceptor('myfile', {
       storage: diskStorage({
@@ -159,45 +152,30 @@ export class NutritionistController {
     file: Express.Multer.File,
   ) {
     nDto.filename = file.filename;
-    return this.nutritionistService.signup(nDto);
+    return this.nutritionistService.upload(nDto);
+  }
+
+  //User info
+  @Get('/userinfo/:id')
+  getUser(@Param('id', ParseIntPipe) id: number): any {
+    return this.nutritionistService.getUser(id);
+  }
+
+  //Get all diet plan
+  @Get('/allplan')
+  getAllPlan(): any {
+    return this.nutritionistService.getAllPlan();
+  }
+
+  //find plan by userid
+  @Get('/find-dietplan/:clientid')
+  getPlanByid(@Param('clientid', ParseIntPipe) clientid: number): any {
+    return this.nutritionistService.getPlanByid(clientid);
+  }
+
+  //Show all client
+  @Get('/allclient')
+  getClient(): any {
+    return this.nutritionistService.getClient();
   }
 }
-
-// //Signup
-// @Post('/fileupload')
-// @UseInterceptors(
-//   FileInterceptor('myfile', {
-//     storage: diskStorage({
-//       destination: './uploads',
-//       filename: function (req, file, cb) {
-//         cb(null, Date.now() + file.originalname);
-//       },
-//     }),
-//   }),
-// )
-// signup(
-//   @Body() ndto: NutritionistForm,
-//   @UploadedFile(
-//     new ParseFilePipe({
-//       validators: [
-//         new MaxFileSizeValidator({ maxSize: 16000 }),
-//         new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
-//       ],
-//     }),
-//   )
-//   file: Express.Multer.File,
-// ) {
-//   ndto.avatar = file.filename;
-
-//   return this.nutritionistService.signup(ndto);
-//   console.log(file);
-// }
-
-// @Put('/updatenutritionist/:id')
-// @UsePipes(new ValidationPipe())
-// updatenutritionistbyid(
-//   @Body() ndto: NutritionistForm,
-//   @Param('id', ParseIntPipe) id: number,
-// ): any {
-//   return this.nutritionistService.updateNutritionistByID(ndto, id);
-//

@@ -29,7 +29,7 @@ export class NutritionistForm {
 
   //Phone
   @IsNotEmpty({ message: 'Phone cannot be empty' })
-  @IsInt({ message: 'Cannot accept this type name' })
+  // @IsInt({ message: 'Cannot accept this type name' })
   // @Length(11, 11, {
   //   message: 'Phone must have 11 numbers',
   // })
@@ -42,7 +42,7 @@ export class NutritionistForm {
 
   //Nid
   @IsNotEmpty({ message: 'Nid cannot be empty' })
-  @IsInt({ message: 'Cannot accept this type name' })
+  // @IsInt({ message: 'Cannot accept this type name' })
   // @Length(11, 11, {
   //   message: 'Nid must have 11 numbers',
   // })
