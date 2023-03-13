@@ -156,10 +156,10 @@ export class NutritionistController {
   }
 
   //User info
-  // @Get('/userinfo/:id')
-  // getUser(@Param('id', ParseIntPipe) id: number): any {
-  //   return this.nutritionistService.getUser(id);
-  // }
+  @Get('/userinfo/:id')
+  getUser(@Param('id', ParseIntPipe) id: number): any {
+    return this.nutritionistService.getUser(id);
+  }
 
   //Get all diet plan
   @Get('/allplan')
@@ -167,15 +167,15 @@ export class NutritionistController {
     return this.nutritionistService.getAllPlan();
   }
 
-  // //find plan by userid
-  // @Get('/find-dietplan/:clientid')
-  // getPlanByid(@Param('clientid', ParseIntPipe) clientid: number): any {
-  //   return this.nutritionistService.getPlanByid(clientid);
-  // }
+  //find plan by userid
+  @Get('/find-dietplan/:clientid')
+  getPlanByid(@Param('clientid', ParseIntPipe) clientid: number): any {
+    return this.nutritionistService.getPlanByid(clientid);
+  }
 
-  // //Show all client
-  // @Get('/allclient')
-  // getClient(): any {
-  //   return this.nutritionistService.getClient();
-  // }
+  //Show all client
+  @Get('/allclient')
+  getClient(): any {
+    return this.nutritionistService.getClient();
+  }
 }
