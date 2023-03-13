@@ -15,8 +15,11 @@ export class NutritionistDietEntity {
   @Column()
   schedule: string;
 
-  @ManyToOne(() => NutritionistEntity, (nutrotionist) => nutrotionist.DietPlan)
-  planNo: NutritionistEntity;
+  // @Column()
+  // planNoId: number;
+
+  // @ManyToOne(() => NutritionistEntity, (nutrotionist) => nutrotionist.DietPlan)
+  // planNo: NutritionistEntity;
 
   // @ManyToOne(() => ClientEntity, (client) => client.questions)
   // client: ClientEntity

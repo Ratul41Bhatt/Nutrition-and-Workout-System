@@ -48,7 +48,7 @@ export class NutritionistController {
   signin(@Session() session, @Body() ndto: NutritionistForm) {
     if (this.nutritionistService.signin(ndto)) {
       session.email = ndto.email;
-      console.log(session.email);
+      // console.log(session.email);
       return { message: 'success' };
     } else {
       return { message: 'invalid credentials' };

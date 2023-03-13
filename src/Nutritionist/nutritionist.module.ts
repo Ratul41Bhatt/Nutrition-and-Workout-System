@@ -5,6 +5,7 @@ import { NutritionistService } from './nutritionist.service';
 import { NutritionistEntity } from './entity/nutritionistentity.entity';
 import { NutritionistDietEntity } from './entity/nutritionistDiet.entity';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { ClientEntity } from 'src/client/client.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { MailerModule } from '@nestjs-modules/mailer';
       },
     }),
 
-    TypeOrmModule.forFeature([NutritionistEntity, NutritionistDietEntity]),
+    TypeOrmModule.forFeature([
+      NutritionistEntity,
+      NutritionistDietEntity,
+      ClientEntity,
+    ]),
   ],
   controllers: [NutritionistController],
   providers: [NutritionistService],

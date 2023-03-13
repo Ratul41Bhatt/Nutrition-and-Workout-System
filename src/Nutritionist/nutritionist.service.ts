@@ -18,6 +18,7 @@ export class NutritionistService {
     private NRepo: Repository<NutritionistEntity>,
     @InjectRepository(NutritionistDietEntity)
     private NDRepo: Repository<NutritionistDietEntity>,
+    @InjectRepository(ClientEntity)
     private CRepo: Repository<ClientEntity>,
     private mailerService: MailerService,
   ) {}
@@ -55,7 +56,7 @@ export class NutritionistService {
     const mydata = await this.NRepo.findOneBy({ email: ndto.email });
     const isMatch = await bcrypt.compare(ndto.password, mydata.password);
     if (isMatch) {
-      return await this.NRepo.findOneBy({ email: ndto.email });
+      return 1;
     } else {
       return 0;
     }

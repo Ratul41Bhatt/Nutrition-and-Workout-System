@@ -30,6 +30,6 @@ export class NutritionistEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => NutritionistDietEntity, (DietPlan) => DietPlan.planNo)
-  DietPlan: NutritionistDietEntity[];
+  // @OneToMany(() => NutritionistDietEntity, (DietPlan) => DietPlan.planNo)
+  // DietPlan: NutritionistDietEntity[];
 }
