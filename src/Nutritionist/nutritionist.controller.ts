@@ -43,13 +43,6 @@ export class NutritionistController {
     return this.nutritionistService.getDashboard(id);
   }
 
-  //  Signup
-  @Post('/signup')
-  @UsePipes(new ValidationPipe())
-  singupN(@Body() ndto: NutritionistForm): any {
-    return this.nutritionistService.signup(ndto);
-  }
-
   //Signin
   @Get('/signin')
   signin(@Session() session, @Body() ndto: NutritionistForm) {
@@ -130,12 +123,12 @@ export class NutritionistController {
 
   //Send mail
   @Post('/sendemail')
-  sendEmail(@Body() emaildto: Email) {
-    return this.nutritionistService.sendEmail(emaildto);
+  sendEmail(@Body() mydata) {
+    return this.nutritionistService.sendEmail(mydata);
   }
 
   //file upload
-  @Post('/upload')
+  @Post('/signup')
   @UseInterceptors(
     FileInterceptor('myfile', {
       storage: diskStorage({
@@ -159,7 +152,7 @@ export class NutritionistController {
     file: Express.Multer.File,
   ) {
     nDto.filename = file.filename;
-    return this.nutritionistService.signup(nDto);
+    return this.nutritionistService.upload(nDto);
   }
 }
 

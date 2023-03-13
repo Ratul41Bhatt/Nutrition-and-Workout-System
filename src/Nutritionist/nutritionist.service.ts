@@ -6,16 +6,18 @@ import { NutritionistForm } from './dto/nutritionistform.dto';
 import { NutritionistDietForm } from './dto/nutritionistDietForm.dto';
 import { NutritionistDietEntity } from './entity/nutritionistDiet.entity';
 import * as bcrypt from 'bcrypt';
+import { MailerService } from '@nestjs-modules/mailer/dist';
+
 import { Email } from './dto/email.dto';
 
 @Injectable()
 export class NutritionistService {
-  mailerService: any;
   constructor(
     @InjectRepository(NutritionistEntity)
     private NRepo: Repository<NutritionistEntity>,
     @InjectRepository(NutritionistDietEntity)
     private NDRepo: Repository<NutritionistDietEntity>,
+    private mailerService: MailerService,
   ) {}
 
   //Available user
@@ -39,16 +41,16 @@ export class NutritionistService {
   }
 
   //Signup
-  async signup(ndto: NutritionistForm): Promise<any> {
-    try {
-      const salt = await bcrypt.genSalt();
-      const hassedpassed = await bcrypt.hash(ndto.password, salt);
-      ndto.password = hassedpassed;
-      return this.NRepo.save(ndto);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async signup(ndto: NutritionistForm): Promise<any> {
+  //   try {
+  //     const salt = await bcrypt.genSalt();
+  //     const hassedpassed = await bcrypt.hash(ndto.password, salt);
+  //     ndto.password = hassedpassed;
+  //     return this.NRepo.save(ndto);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   async upload(nDto) {
     const salt = await bcrypt.genSalt(10);
@@ -131,11 +133,11 @@ export class NutritionistService {
   }
 
   //Send mail
-  async sendEmail(emaildto: Email) {
+  async sendEmail(mydata) {
     return await this.mailerService.sendMail({
-      to: emaildto.to,
-      subject: emaildto.subject,
-      text: emaildto.text,
+      to: mydata.email,
+      subject: mydata.subject,
+      text: mydata.text,
     });
   }
 }
