@@ -18,7 +18,7 @@ export class NutritionistService {
     private NRepo: Repository<NutritionistEntity>,
     @InjectRepository(NutritionistDietEntity)
     private NDRepo: Repository<NutritionistDietEntity>,
-    private CRepo: Repository<ClientEntity>,
+    //private CRepo: Repository<ClientEntity>,
     private mailerService: MailerService,
   ) {}
 
@@ -132,14 +132,14 @@ export class NutritionistService {
   }
 
   //Get user
-  async getUser(id: number): Promise<any> {
-    const userInfo = await this.CRepo.findOneBy({ id: id });
-    if (userInfo != null) {
-      return userInfo;
-    } else {
-      return 'No data found';
-    }
-  }
+  // async getUser(id: number): Promise<any> {
+  //   const userInfo = await this.CRepo.findOneBy({ id: id });
+  //   if (userInfo != null) {
+  //     return userInfo;
+  //   } else {
+  //     return 'No data found';
+  //   }
+  // }
 
   //Get all plan
   async getAllPlan(): Promise<any> {
@@ -152,24 +152,24 @@ export class NutritionistService {
   }
 
   //find planby client id
-  async getPlanByid(clientid): Promise<any> {
-    const dietplan = await this.NDRepo.findOneBy({ id: clientid });
-    if (dietplan != null) {
-      return dietplan;
-    } else {
-      return 'No data found';
-    }
-  }
+  // async getPlanByid(clientid): Promise<any> {
+  //   const dietplan = await this.NDRepo.findOneBy({ id: clientid });
+  //   if (dietplan != null) {
+  //     return dietplan;
+  //   } else {
+  //     return 'No data found';
+  //   }
+  // }
 
   //all client
-  async getClient(): Promise<any> {
-    const allClient = await this.CRepo.find();
-    if (allClient != null) {
-      return allClient;
-    } else {
-      return 'No data found';
-    }
-  }
+//   async getClient(): Promise<any> {
+//     const allClient = await this.CRepo.find();
+//     if (allClient != null) {
+//       return allClient;
+//     } else {
+//       return 'No data found';
+//     }
+//   }
 }
 
 // updateNutritionistByID(ndto: NutritionistForm, id: number): any {

@@ -64,7 +64,5 @@ export class TrainerEntity
 
   @Column()
   contact: number;
-
-   
  
 }

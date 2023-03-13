@@ -9,14 +9,36 @@ import { QuestionForm } from './question.dto';
 import { QuestionEntity } from './question.entity';
 import * as bcrypt from 'bcrypt';
 
+import { MailerService } from '@nestjs-modules/mailer/dist';
+import { ExerciseEntity, TrainerEntity, WorkoutEntity } from 'src/Trainer/trainer.entity';
+import { NutritionistEntity } from 'src/Nutritionist/entity/nutritionistentity.entity';
+import { NutritionistDietEntity } from 'src/Nutritionist/entity/nutritionistDiet.entity';
+
 @Injectable()
 export class ClientService {
   constructor (
     @InjectRepository(ClientEntity)
     private ClientRepo: Repository<ClientEntity>,
 
+    @InjectRepository(WorkoutEntity)
+    private workoutRepo: Repository<WorkoutEntity>,
+
+    @InjectRepository(ExerciseEntity)
+    private exerciseRepo: Repository<ExerciseEntity>,
+
     @InjectRepository(QuestionEntity)
     private QuestionRepo: Repository<QuestionEntity>,
+
+    @InjectRepository(TrainerEntity)
+    private TrainerRepo: Repository<TrainerEntity>,
+
+    @InjectRepository(NutritionistEntity)
+    private NutritionistRepo: Repository<NutritionistEntity>,
+
+    @InjectRepository(NutritionistDietEntity)
+    private NutritionistDietRepo: Repository<NutritionistDietEntity>,
+
+    private mailerService: MailerService
   ) {}
 
   getIndex():any {
@@ -27,24 +49,43 @@ export class ClientService {
     return "User Dashboard";
   }
 
-  getNutritionistList():string {
-    return "Get All Nutritionist Info";
+  getNutritionistList():any {
+    return this.NutritionistRepo.find();
   }
 
   getTrainerList():any {
-    return "Get All Trainer Info";
+    return this.TrainerRepo.find();
   }
 
-  getNutritionist(qry):any {
-    return "Location: "+qry.location+" and Hours:"+qry.hours;
+  getNutritionist(name):any {
+    return this.NutritionistRepo.find({ 
+      where: {firstname:name},
+    })
   }
 
-  getTrainer(qry):any {
-    return "Location: "+qry.location+" and Hours:"+qry.hours;
+  getTrainer(name):any {
+    return this.TrainerRepo.find({ 
+      where: {firstname:name},
+    })
   }
 
-  /*getWorkout():any {
+  getWorkout():any {
     return this.workoutRepo.find();
+  }
+
+  getWorkoutByID(id: number): any
+  {
+    return this.workoutRepo.find({ 
+      where: {id:id},
+      
+    })
+  }
+
+  getWorkoutByName(name): any
+  {
+    return this.workoutRepo.find({ 
+      where: {workoutname:name},
+    })
   }
 
   getexercisesByWorkoutName(name):any {
@@ -55,7 +96,6 @@ export class ClientService {
       },
     });
   }
-*/
   NewClient(clientDto:ClientForm):any {
     const ClientAccount = new ClientEntity()
     ClientAccount.name = clientDto.name;
@@ -128,5 +168,13 @@ export class ClientService {
     {
       return 0;
     }
+  }
+
+  async emailSending(clientdata) {
+    return await this.mailerService.sendMail({
+      to: clientdata.email,
+      subject: clientdata.subject,
+      text: clientdata.text,
+    });
   }
 }

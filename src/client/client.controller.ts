@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UnauthorizedException} from "@nestjs/common";
 import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from "./clientupdateform.dto";
 import { ClientService } from "./client.service";
@@ -32,26 +32,36 @@ export class ClientController {
        return this.clientService.getTrainerList();
   }
 
-    @Get("/findNutritionist")
-    getNutritionist(@Query() qry:any): any {
-        return this.clientService.getNutritionist(qry);
+    @Get("/findNutritionist/:name")
+    getNutritionist(@Param('name') name: String): any {
+        return this.clientService.getNutritionist(name);
     }
 
-    @Get("/findTrainer")
-    getTrainer(@Query() qry:any): any {
-        return this.clientService.getTrainer(qry);
+    @Get("/findTrainer/:name")
+    getTrainer(@Param('name') name: String): any {
+        return this.clientService.getTrainer(name);
     }
 
-    /*
+
     @Get("/workout")
     getWorkout():any {
         return this.clientService.getWorkout();
-    } */
+    } 
 
-   /* @Get('/findExercisesByWorkoutname/:name')
+    @Get('/findworkoutbyid/:id')
+    getWorkoutByID(@Param('id', ParseIntPipe) id: number): any {
+      return this.clientService.getWorkoutByID(id);
+    }
+  
+    @Get('/findworkoutbyname/:name')
+    getWorkoutByName(@Param('name') name: String): any {
+      return this.clientService.getWorkoutByName(name);
+    }
+
+    @Get('/findExercisesByWorkoutname/:name')
     getexercisesByWorkoutName(@Param('name')name: string): any {
         return this.clientService.getexercisesByWorkoutName(name); 
-    }*/
+    }
 
     @Post("/clientReg")
     @UsePipes(new ValidationPipe())
@@ -145,5 +155,23 @@ export class ClientController {
         {
             return { message: "invalid credentials"};
         }
+    }
+
+    @Get('/signout')
+    signout(@Session() session)
+    {
+        if(session.destroy())
+        {
+            return {message: "Log out"};
+        }
+        else
+        {
+            throw new UnauthorizedException("Invalid action");
+        }
+    }
+
+    @Post('/emailSending')
+    emailSending(@Body() clientdata) {
+        return this.clientService.emailSending(clientdata);
     }
 }

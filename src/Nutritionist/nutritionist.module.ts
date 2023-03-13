@@ -7,21 +7,7 @@ import { NutritionistDietEntity } from './entity/nutritionistDiet.entity';
 import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
-  imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-        port: 465,
-        ignoreTLS: true,
-        secure: true,
-        auth: {
-          user: 'ahmedadibctg@gmail.com',
-          pass: 'tmzmccfausbigxwq',
-        },
-      },
-    }),
-
-    TypeOrmModule.forFeature([NutritionistEntity, NutritionistDietEntity]),
+  imports: [TypeOrmModule.forFeature([NutritionistEntity, NutritionistDietEntity]),
   ],
   controllers: [NutritionistController],
   providers: [NutritionistService],
