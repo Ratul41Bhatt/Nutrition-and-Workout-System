@@ -1,4 +1,4 @@
-//import { UserEntity } from 'src/user/user.entity';
+
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany,ManyToOne } from 'typeorm';
 
 
@@ -44,7 +44,7 @@ workout: WorkoutEntity
  
 }
 
-/*@Entity("Trainer")
+@Entity("Trainer")
 export class TrainerEntity
 {
   @PrimaryGeneratedColumn()
@@ -60,10 +60,11 @@ export class TrainerEntity
   email: string;
 
   @Column()
+  password: string;
+
+  @Column()
   contact: number;
 
-  @OneToMany(() => ExerciseEntity, (exercise) => exercise.workout)
-  exercise: WorkoutEntity[]
-
+   
+ 
 }
-*/

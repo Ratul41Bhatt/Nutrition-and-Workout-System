@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WorkoutEntity, ExerciseEntity } from 'src/Trainer/trainer.entity';
 import { Repository } from 'typeorm';
 import { ClientEntity } from './client.entity';
 
@@ -15,10 +14,7 @@ export class ClientService {
   constructor (
     @InjectRepository(ClientEntity)
     private ClientRepo: Repository<ClientEntity>,
-    @InjectRepository(WorkoutEntity)
-    private workoutRepo: Repository<WorkoutEntity>,
-    @InjectRepository(ExerciseEntity)
-    private exercise: Repository<ExerciseEntity>,
+
     @InjectRepository(QuestionEntity)
     private QuestionRepo: Repository<QuestionEntity>,
   ) {}
@@ -47,7 +43,7 @@ export class ClientService {
     return "Location: "+qry.location+" and Hours:"+qry.hours;
   }
 
-  getWorkout():any {
+  /*getWorkout():any {
     return this.workoutRepo.find();
   }
 
@@ -59,7 +55,7 @@ export class ClientService {
       },
     });
   }
-
+*/
   NewClient(clientDto:ClientForm):any {
     const ClientAccount = new ClientEntity()
     ClientAccount.name = clientDto.name;

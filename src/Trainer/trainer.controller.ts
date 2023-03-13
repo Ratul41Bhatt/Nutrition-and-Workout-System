@@ -15,6 +15,7 @@ import {
   FileTypeValidator,
   ParseFilePipe,
   UploadedFile,
+  Session
  
   
   } from '@nestjs/common';
@@ -146,14 +147,7 @@ import { parse } from 'querystring';
  //    return this.trainerService.addexercise(adto);
 //  }
 
-//@Post('/addexercise')
- // @UsePipes(new ValidationPipe())
- // addexercise(@Body() exercisedto: ExerciseForm): any {
- //     return this.trainerService.addexercise(exercisedto);
- // }
-
-
-/*@Post('/signup')
+@Post('/signup')
 @UseInterceptors(FileInterceptor('myfile',
 {storage:diskStorage({
   destination: './uploads',
@@ -174,10 +168,31 @@ mydto.firstname = file.filename;
 return this.trainerService.signup(mydto);
 console.log(file)
 }
-*/
+
+@Get('/signin')
+signin(@Session() session, @Body() mydto:TrainerForm)
+{
+if(this.trainerService.signin(mydto))
+{
+  session.email = mydto.email;
+
+  console.log(session.email);
+  return {message:"success"};
+
+}
+else
+{
+  return {message:"invalid credentials"};
+}
+  
+}
 
 
 
+@Post('/sendemail')
+sendEmail(@Body() mydata){
+return this.trainerService.sendEmail(mydata);
+}
   
 
 }
