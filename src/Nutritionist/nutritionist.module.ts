@@ -27,6 +27,7 @@ import { ClientEntity } from 'src/client/client.entity';
       NutritionistDietEntity,
       ClientEntity,
     ]),
+  imports: [TypeOrmModule.forFeature([NutritionistEntity, NutritionistDietEntity]),
   ],
   controllers: [NutritionistController],
   providers: [NutritionistService],

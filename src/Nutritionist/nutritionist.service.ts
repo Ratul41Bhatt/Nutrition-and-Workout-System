@@ -56,7 +56,7 @@ export class NutritionistService {
     const mydata = await this.NRepo.findOneBy({ email: ndto.email });
     const isMatch = await bcrypt.compare(ndto.password, mydata.password);
     if (isMatch) {
-      return 1;
+      return await this.NRepo.findOneBy({ email: ndto.email });
     } else {
       return 0;
     }

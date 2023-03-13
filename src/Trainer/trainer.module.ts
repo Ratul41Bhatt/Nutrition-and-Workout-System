@@ -7,23 +7,7 @@ import {  TrainerEntity, ExerciseEntity, WorkoutEntity } from './trainer.entity'
 
 
 @Module({
-  imports: [
-
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-                 port: 465,
-                 ignoreTLS: true,
-                 secure: true,
-                 auth: {
-                     user: 'snasir2194@gmail.com',
-                     pass: 'ukwvbdgbdqdeubkf'
-                 },
-                }
-    }),
-    
-    
-    TypeOrmModule.forFeature([ TrainerEntity, ExerciseEntity, WorkoutEntity])],
+  imports: [TypeOrmModule.forFeature([ TrainerEntity, ExerciseEntity, WorkoutEntity])],
 
   controllers: [TrainerController],
   providers: [TrainerService],
