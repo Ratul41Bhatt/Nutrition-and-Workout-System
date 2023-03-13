@@ -121,4 +121,16 @@ export class ClientService {
     clientDto.password = hassedpassed;
     return this.ClientRepo.save(clientDto);
   }
+
+  async signin(clientDto) {
+    const data = await this.ClientRepo.findOneBy({email: clientDto.email});
+    const isMatch = await bcrypt.compare(clientDto.password, data.password);
+    if(isMatch) {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+  }
 }

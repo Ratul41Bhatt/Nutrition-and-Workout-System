@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query} f
 import { ClientForm } from "./clientform.dto";
 import { ClientUpdateForm } from "./clientupdateform.dto";
 import { ClientService } from "./client.service";
-import { UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common/decorators";
+import { Session, UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common/decorators";
 import { FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, ValidationPipe } from "@nestjs/common/pipes";
 import { QuestionForm } from "./question.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -130,5 +130,19 @@ export class ClientController {
     }),) file: Express.Multer.File) {
         clientDto.filename = file.filename;
         return this.clientService.signup(clientDto);
+    }
+
+    @Get('/signin')
+    signin(@Session() session, @Body() clientDto:ClientForm)
+    {
+        if(this.clientService.signin(clientDto))
+        {
+            session.email = clientDto.email;
+            return {message: "success"};
+        }
+        else
+        {
+            return { message: "invalid credentials"};
+        }
     }
 }
